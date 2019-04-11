@@ -18,4 +18,4 @@ if you have created an awesome playbook, we want to see it!
 
 At the moment, we only have FortiManager modules released, but expect more soon.
 
-####[Fortinet Ansible Module Documentation](https://ftnt-ansible-docs.readthedocs.io/en/latest/)
+[Fortinet Ansible Module Documentation](https://ftnt-ansible-docs.readthedocs.io/en/latest/)
