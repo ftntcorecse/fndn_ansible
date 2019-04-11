@@ -1,0 +1,30 @@
+---
+
+- name: CONFIG FMGR FIREWALL OBJECTS
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+
+  - name: ADD IPv4 IP ADDRESS OBJECT
+    fmgr_fwobj_address:
+      mode: "add"
+      adom: "ansible"
+      ipv4: "ipmask"
+      ipv4addr: "10.7.220.0/25"
+      name: "ansible_v4Obj_Subnet1"
+      comment: "Dev Example for Ansible"
+      color: "22"
+      #tags: "ansible, ipv4, test123, test321"
+
+  - name: ADD IPv4 IP ADDRESS OBJECT (NON CIDR TEST)
+    fmgr_fwobj_address:
+      mode: "add"
+      adom: "ansible"
+      ipv4: "ipmask"
+      ipv4addr: "10.7.220.128/255.255.255.128"
+      name: "ansible_v4Obj_Subnet2"
+      comment: "Dev Example for Ansible"
+      color: "22"
+      #tags: "ansible, ipv4, test123, test321"

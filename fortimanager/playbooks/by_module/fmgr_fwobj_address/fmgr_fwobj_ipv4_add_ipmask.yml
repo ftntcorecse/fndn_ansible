@@ -1,0 +1,33 @@
+---
+
+- name: CONFIG IPv4 IP ADDRESS OBJECT
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+
+  - name: ADD IPv4 IP ADDRESS OBJECT
+    fmgr_fwobj_address:
+      mode: "delete"
+      adom: "ansible"
+      ipv4: "ipmask"
+      ipv4addr: "10.7.220.30/32"
+      name: "ansible_v4Obj_ipMask2"
+      comment: "Ansible is fun! Paramgram!"
+      #tags: "ansible, ipv4, object"
+      color: "26"
+
+  - name: ADD IPv4 IP ADDRESS OBJECT MORE OPTIONS
+    fmgr_fwobj_address:
+      ipv4: "ipmask"
+      ipv4addr: "10.7.220.41/32"
+      name: "ansible_v4Obj_MORE"
+      comment: "Ansible more options"
+      #tags: "ansible, ipv4, object"
+      color: "6"
+      allow_routing: "enable"
+      cache_ttl: "180"
+      associated_interface: "port1"
+      adom: "ansible"
+      mode: "set"

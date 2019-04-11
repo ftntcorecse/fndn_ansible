@@ -1,0 +1,29 @@
+---
+
+- name: CONFIG FGT HOSTNAME AND INTERFACE
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+
+  - name: CHANGE HOSTNAME
+    fmgr_device_config:
+      #the new hostname for the Fortigate
+      device_hostname: "ansible-fgt03"
+      #the "friendly name" of the device in FortiManager
+      device_unique_name: "FGT3"
+      #adom to put the device in
+      adom: "ansible"
+
+
+  - name: EDIT INTERFACE INFORMATION
+    fmgr_device_config:
+      adom: "ansible"
+      device_unique_name: "FGT3"
+      #interface to configure
+      interface: "port2"
+      #ip address to add to interface
+      interface_ip: "10.1.3.1/24"
+      #edit management access
+      interface_allow_access: "ping, telnet, https, http"

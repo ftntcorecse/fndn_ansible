@@ -1,0 +1,14 @@
+---
+- name: DISCOVER AND ADD DEVICES
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+    - name: DISCOVER AND ADD DEVICE FGT1 IPv6
+      fmgr_device:
+        adom: "ansible"
+        device_username: "admin"
+        device_password: "fortinet"
+        device_ip: "fdc3:7fb3:8b9f:468b::2001"
+        device_unique_name: "FGT1"

@@ -1,0 +1,43 @@
+---
+
+- name: CONFIG FW POLICY PACKAGES AND FOLDERS
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+  - name: ADD PACKAGE WITH TARGETS
+    fmgr_fwpol_package:
+      mode: "add"
+      adom: "ansible"
+      name: "ansibleTestPackage1"
+      object_type: "pkg"
+      inspection_mode: "flow"
+      ngfw_mode: "profile-based"
+      scope_members: "FGT2, FGT3"
+
+  - name: ADD FOLDER
+    fmgr_fwpol_package:
+      mode: "add"
+      adom: "ansible"
+      name: "ansibleTestFolder1"
+      object_type: "folder"
+
+  - name: ADD PACKAGE INTO PARENT FOLDER
+    fmgr_fwpol_package:
+      mode: "set"
+      adom: "ansible"
+      name: "ansibleTestPackage2"
+      object_type: "pkg"
+      parent_folder: "ansibleTestFolder1"
+
+  - name: ADD FOLDER INTO PARENT FOLDER
+    fmgr_fwpol_package:
+      mode: "set"
+      adom: "ansible"
+      name: "ansibleTestFolder2"
+      object_type: "folder"
+      parent_folder: "ansibleTestFolder1"
+
+
+

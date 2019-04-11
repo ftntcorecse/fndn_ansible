@@ -1,0 +1,32 @@
+---
+- name: CREATE DEVICE GROUP AND ADD MEMBERS
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+    - name: CREATE DEVICE GROUP
+      fmgr_device_group:
+        grp_name: "TestGroup"
+        grp_desc: "CreatedbyAnsible"
+        adom: "ansible"
+
+    - name: CREATE DEVICE GROUP
+      fmgr_device_group:
+        grp_name: "AnsibleGroup"
+        grp_desc: "CreatedbyAnsible"
+        adom: "ansible"
+
+    - name: ADD DEVICES TO DEVICE GROUP
+      fmgr_device_group:
+        mode: "add"
+        grp_name: "TestGroup"
+        grp_members: "FGT1"
+        adom: "ansible"
+
+    - name: DELETE DEVICE GROUP
+      fmgr_device_group:
+        grp_name: "AnsibleGroup"
+        grp_desc: "CreatedbyAnsible"
+        mode: "delete"
+        adom: "ansible"

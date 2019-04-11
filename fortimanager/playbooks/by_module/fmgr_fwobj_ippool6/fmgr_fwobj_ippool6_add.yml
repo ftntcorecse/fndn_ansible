@@ -1,0 +1,17 @@
+---
+
+- name: CONFIG FMGR FIREWALL OBJECTS
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+
+  - name: ADD FMGR_FIREWALL_IPPOOL6
+    fmgr_fwobj_ippool6:
+      mode: "add"
+      adom: "ansible"
+      startip: "fd30:fc67:cb18:ae44::aaaa:aaaa"
+      name: "IPv6 IPPool"
+      endip: "fd30:fc67:cb18:ae44::ffff:ffff"
+      comments: "Created by Ansible"

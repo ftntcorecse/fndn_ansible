@@ -1,0 +1,30 @@
+---
+
+- name: CONFIG FW POLICY PACKAGES AND FOLDERS
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+  - name: INSTALL PACKAGE 1
+    fmgr_fwpol_package:
+      mode: "install"
+      object_type: "pkg"
+      adom: "ansible"
+      name: "ansibleTestPackage1"
+
+  - name: INSTALL PACKAGE 2
+    fmgr_fwpol_package:
+      mode: "install"
+      object_type: "pkg"
+      adom: "ansible"
+      name: "ansibleTestPackage2"
+      parent_folder: "ansibleTestFolder1"
+#
+  - name: INSTALL PACKAGE 3
+    fmgr_fwpol_package:
+      mode: "install"
+      object_type: "pkg"
+      adom: "ansible"
+      name: "ansibleTestPackage3"
+      parent_folder: "ansibleTestFolder1/ansibleTestFolder2"

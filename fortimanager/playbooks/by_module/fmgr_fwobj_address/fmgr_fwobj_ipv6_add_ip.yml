@@ -1,0 +1,19 @@
+---
+
+- name: CONFIG FMGR FIREWALL OBJECTS
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+
+  - name: ADD IPv6 ADDRESS
+    fmgr_fwobj_address:
+      adom: "ansible"
+      mode: "add"
+      ipv6: "ip"
+      ipv6addr: "2001:0db8:85a3:0000:0000:8a2e:0370:7334"
+      name: "ansible_v6Obj"
+      comment: "Dev Example for Ansible"
+      color: "22"
+      #tags: "ansible, ipv4, test123, test321"

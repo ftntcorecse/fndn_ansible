@@ -1,0 +1,27 @@
+---
+
+- name: REMOVE FGT GRP
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+    - name: DELETE DEVICE GROUP
+      fmgr_device_group:
+        #GETTING FORTIMANAGER HOST IP OR NAME FROM ANSIBLE INVENTORY FOR HOSTS GROUP ABOVE
+        #DYNAMIC MAPPING FOR THE FORTIMANAGER LOGIN AS SPECIFIED IN INVENTORY FILE
+        #NAME OF GROUP YOU WANT TO ADD
+        grp_name: "TestGroup"
+        #DESCRIPTION TO ADD TO GROUP
+        grp_desc: "CreatedbyAnsible"
+        #STATE if "present" add the group, if "absent" delete the GROUP
+        mode: "delete"
+        #ADOM TO CREATE THE GROUP IN
+        adom: "ansible"
+
+    - name: DELETE DEVICE GROUP 2
+      fmgr_device_group:
+        grp_name: "testtest"
+        grp_desc: "CreatedbyAnsible"
+        mode: "delete"
+        adom: "ansible"

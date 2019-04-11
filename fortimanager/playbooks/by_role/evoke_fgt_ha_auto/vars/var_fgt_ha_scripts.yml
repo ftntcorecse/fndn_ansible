@@ -1,0 +1,94 @@
+var_fgt_ha_scripts:
+  - adom: "ansible"
+    script_name: "seattle-fgt-ha01"
+    script_type: "cli"
+    script_target: "remote_device"
+    script_description: "HA SCRIPT FOR seattle-fgt-cluster"
+    script_content: "config route static \n
+                      edit 1 \n
+                      set device port1 \n
+                      set gateway 192.168.0.254 \n
+                      end \n
+                     config system ha \n
+                      set group-id 10 \n
+                      set group-name 'seattle-fgt-cluster' \n
+                      set mode a-p \n
+                      set password fortinet \n
+                      set priority 200 \n
+                      set hbdev port10 200 port9 100 \n
+                      set authentication enable \n
+                      set session-pickup enable \n
+                      set session-pickup-connectionless enable \n
+                      set override disable \n
+                      set ha-mgmt-status enable \n
+                      config ha-mgmt-interfaces \n
+                        edit 1 \n
+                          set interface port2 \n
+                          set gateway 192.168.20.253 \n
+                          set dst 0.0.0.0/0 \n
+                          end \n
+                      end \n
+                      config firewall policy \n
+                      edit 1 \n
+                       set srcintf port3 \n
+                       set dstintf port1 \n
+                       set action accept \n
+                       set name WAN \n
+                       set srcaddr all \n
+                       set dstaddr all \n
+                       set nat enable \n
+                       set schedule always \n
+                       set service ALL \n
+                       end \n
+                     config system interface \n
+                      edit port3 \n
+                       set ip 192.168.21.253/24 \n
+                       end \n
+                      execute update-now \n"
+
+  - adom: "ansible"
+    script_name: "nyc-fgt-ha01"
+    script_type: "cli"
+    script_target: "remote_device"
+    script_description: "HA SCRIPT FOR nyc-fgt-cluster"
+    script_content: "config route static \n
+                     edit 1 \n
+                      set device port1 \n
+                      set gateway 192.168.0.254 \n
+                      end \n
+                     config system ha \n
+                      set group-id 11 \n
+                      set group-name 'nyc-fgt-cluster' \n
+                      set mode a-p \n
+                      set password fortinet \n
+                      set priority 200 \n
+                      set hbdev port10 200 port9 100 \n
+                      set authentication enable \n
+                      set session-pickup enable \n
+                      set session-pickup-connectionless enable \n
+                      set override disable \n
+                      set ha-mgmt-status enable \n
+                      config ha-mgmt-interfaces \n
+                        edit 1 \n
+                          set interface port2 \n
+                          set gateway 192.168.50.253 \n
+                          set dst 0.0.0.0/0 \n
+                          end \n
+                      end \n
+                      config firewall policy \n
+                      edit 1 \n
+                       set srcintf port3 \n
+                       set dstintf port1 \n
+                       set action accept \n
+                       set name WAN \n
+                       set srcaddr all \n
+                       set dstaddr all \n
+                       set nat enable \n
+                       set schedule always \n
+                       set service ALL \n
+                       end \n
+                     config system interface \n
+                      edit port3 \n
+                       set ip 192.168.51.253/24 \n
+                       end \n
+                      execute update-now \n"

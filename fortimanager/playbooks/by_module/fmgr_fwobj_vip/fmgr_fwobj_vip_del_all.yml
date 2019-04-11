@@ -1,0 +1,36 @@
+---
+
+- name: CONFIG CUSTOM SERVICES
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+
+  # BASIC FULL PORT NAT MAPPING
+  - name: DELETE FMGR_FIREWALL_VIP PNAT
+    fmgr_fwobj_vip:
+      name: "Basic PNAT Map Port 10443"
+      mode: "delete"
+      adom: "ansible"
+
+  - name: DELETE FMGR_FIREWALL_VIP SNAT
+    fmgr_fwobj_vip:
+      name: "Basic StaticNAT Map"
+      mode: "delete"
+      adom: "ansible"
+
+  - name: DELETE FMGR_FIREWALL_VIP DNS
+    fmgr_fwobj_vip:
+      name: "Basic DNS Translation"
+      mode: "delete"
+      adom: "ansible"
+
+  - name: DELETE FMGR_FIREWALL_VIP FQDN
+    fmgr_fwobj_vip:
+      name: "Basic FQDN Translation"
+      mode: "delete"
+      adom: "ansible"
+
+
+

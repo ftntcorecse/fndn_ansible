@@ -1,0 +1,19 @@
+---
+- name: "SET FORTIMETER LIC LEVEL"
+  connection: httpapi
+  gather_facts: false
+  hosts: FortiManager
+
+  tasks:
+#    - name: SET LICENSING MODE ON FORTIMETER DEVICE to ALL
+#      fmgr_fortimeter:
+#        adom: "ansible"
+#        device_unique_name: "seattle-fgt-cluster"
+#        fortimeter_utm_level: "all"
+
+    - name: SET LICENSING MODE ON FORTIMETER DEVICE to a COMBO
+      fmgr_fortimeter:
+        adom: "ansible"
+        device_unique_name: "nyc-fgt-cluster"
+        fortimeter_utm_level: "fw, ips, av"
+

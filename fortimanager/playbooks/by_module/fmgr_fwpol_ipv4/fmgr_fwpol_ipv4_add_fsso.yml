@@ -1,0 +1,26 @@
+---
+
+- name: CONFIG FW POLICIES
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+
+  - name: ADD VERY BASIC IPV4 POLICY WITH FSSO
+    fmgr_fwpol_ipv4:
+      mode: "set"
+      adom: "root"
+      package_name: "default"
+      name: "Test_FSSO_IPv4_Policy"
+      comments: "Created by Ansible"
+      action: "accept"
+      dstaddr: "srcaddr2"
+      srcaddr: "srcaddr1"
+      dstintf: "wan1"
+      srcintf: "lan"
+      logtraffic: "all"
+      service: "ALL"
+      schedule: "always"
+      fsso: "enable"
+      groups: "SSL_OMG_GR"

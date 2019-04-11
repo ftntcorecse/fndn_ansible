@@ -1,0 +1,86 @@
+---
+
+- name: CONFIG FW POLICY PACKAGES AND FOLDERS
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+  - name: DELETE ROOT PACKAGE
+    fmgr_fwpol_package:
+      mode: "delete"
+      adom: "ansible"
+      name: "ansibleTestPackage1"
+      object_type: "pkg"
+    ignore_errors: yes
+
+  - name: REMOVE NESTED PACKAGE
+    fmgr_fwpol_package:
+      mode: "delete"
+      adom: "ansible"
+      name: "ansibleTestPackage2"
+      object_type: "pkg"
+      parent_folder: "ansibleTestFolder1"
+    ignore_errors: yes
+
+  - name: REMOVE NESTED PACKAGE 2
+    fmgr_fwpol_package:
+      mode: "delete"
+      adom: "ansible"
+      name: "ansibleTestPackage3"
+      object_type: "pkg"
+      parent_folder: "ansibleTestFolder1/ansibleTestFolder2"
+    ignore_errors: yes
+
+  - name: REMOVE NESTED PACKAGE 3
+    fmgr_fwpol_package:
+      mode: "delete"
+      adom: "ansible"
+      name: "ansibleTestPackage4"
+      object_type: "pkg"
+      parent_folder: "ansibleTestFolder1/ansibleTestFolder2/ansibleTestFolder3"
+    ignore_errors: yes
+
+  - name: REMOVE NESTED PACKAGE 4
+    fmgr_fwpol_package:
+      mode: "delete"
+      adom: "ansible"
+      name: "ansibleTestPackage5"
+      object_type: "pkg"
+      parent_folder: "ansibleTestFolder1/ansibleTestFolder2/ansibleTestFolder3/ansibleTestFolder4"
+    ignore_errors: yes
+
+  - name: REMOVE NESTED FOLDER 3
+    fmgr_fwpol_package:
+      mode: "delete"
+      adom: "ansible"
+      name: "ansibleTestFolder4"
+      object_type: "folder"
+      parent_folder: "ansibleTestFolder1/ansibleTestFolder2/ansibleTestFolder3"
+    ignore_errors: yes
+
+  - name: REMOVE NESTED FOLDER 3
+    fmgr_fwpol_package:
+      mode: "delete"
+      adom: "ansible"
+      name: "ansibleTestFolder3"
+      object_type: "folder"
+      parent_folder: "ansibleTestFolder1/ansibleTestFolder2"
+    ignore_errors: yes
+
+  - name: REMOVE NESTED FOLDER 2
+    fmgr_fwpol_package:
+      mode: "delete"
+      adom: "ansible"
+      name: "ansibleTestFolder2"
+      object_type: "folder"
+      parent_folder: "ansibleTestFolder1"
+    ignore_errors: yes
+
+  - name: REMOVE FOLDER
+    fmgr_fwpol_package:
+      mode: "delete"
+      adom: "ansible"
+      name: "ansibleTestFolder1"
+      object_type: "folder"
+    ignore_errors: yes

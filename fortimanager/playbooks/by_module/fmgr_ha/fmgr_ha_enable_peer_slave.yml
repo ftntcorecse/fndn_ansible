@@ -1,0 +1,15 @@
+---
+- name: ADD FMG HA PEER
+  hosts: FortiManagerSlave
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+    - name: ADD FORTIMANAGER HA PEER
+      fmgr_ha:
+        fmgr_ha_peer_ipv4: "10.7.220.35"
+        fmgr_ha_peer_sn: "FMG-VMTM18001881"
+        fmgr_ha_peer_status: "enable"
+        fmgr_ha_mode: "slave"
+        fmgr_ha_cluster_pw: "fortinet"
+        fmgr_ha_cluster_id: "2"

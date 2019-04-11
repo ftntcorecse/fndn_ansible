@@ -1,0 +1,19 @@
+---
+
+- name: CONFIG FMGR FIREWALL OBJECTS
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+
+  - name: ADD IPv4 IP ADDRESS WILDCARD FQDN OBJECT
+    fmgr_fwobj_address:
+      ipv4: "wildcard-fqdn"
+      mode: "add"
+      adom: "ansible"
+      wildcard_fqdn: "*.myds.com"
+      name: "Synology myds DDNS service"
+      comment: "Dev Example for Ansible"
+      color: "22"
+      #tags: "ansible, ipv4, test123, test321"

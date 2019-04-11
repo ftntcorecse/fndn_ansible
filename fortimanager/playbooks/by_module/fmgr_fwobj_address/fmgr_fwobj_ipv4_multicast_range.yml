@@ -1,0 +1,20 @@
+---
+
+- name: CONFIG IPv4 IP ADDRESS OBJECT
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+
+  - name: ADD MULTICAST RANGE
+    fmgr_fwobj_address:
+      adom: "ansible"
+      mode: "add"
+      multicast: "multicastrange"
+      start_ip: "224.0.0.251"
+      end_ip: "224.0.0.251"
+      name: "ansible_multicastrange"
+      comment: "Dev by Ansible"
+      color: "22"
+      #tags: "blahBlahBlah"

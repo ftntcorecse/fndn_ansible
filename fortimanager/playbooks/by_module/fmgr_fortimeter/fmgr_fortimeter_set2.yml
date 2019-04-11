@@ -1,0 +1,14 @@
+---
+- name: "SET FORTIMETER LIC LEVEL"
+  connection: httpapi
+  gather_facts: false
+  hosts: FortiProvision
+
+  tasks:
+    - name: SET LICENSING MODE ON FORTIMETER DEVICE to a COMBO
+      fmgr_fortimeter:
+        adom: "ansible"
+        device_unique_name: "ansible-fgt01"
+        fortimeter_utm_level: "fw, ips, av, ac, all"
+        foslic_type: 2
+

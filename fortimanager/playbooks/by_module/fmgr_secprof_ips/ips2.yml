@@ -1,0 +1,27 @@
+---
+- name: Create and Delete security profile in FMG
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+#    - name: DELETE Profile
+#      fmgr_ips_sensor:
+#        name: "Ansible_IPS_Profile"
+#        comment: "Created by Ansible Module TEST"
+#        mode: "delete"
+
+
+    - name: CREATE Profile
+      fmgr_ips_sensor:
+        name: "Ansible_IPS_Profile"
+        comment: "Created by Ansible Module TEST"
+        mode: "set"
+        block_malicious_url: "enable"
+
+        entries_action: "block"
+        entries_severity: "high"
+        entries_log: "enable"
+        entries_status: "enable"
+
+        entries: [{severity: "high", action: "block"}, {severity: "low", action: "pass"}]

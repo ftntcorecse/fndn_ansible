@@ -1,0 +1,19 @@
+---
+
+- name: CONFIG FMGR FIREWALL OBJECTS
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+
+  - name: ADD IPv4 IP ADDRESS GEO OBJECT
+    fmgr_fwobj_address:
+      ipv4: "geography"
+      country: "US"
+      mode: "add"
+      adom: "ansible"
+      name: "ansible_geo"
+      comment: "Dev Example for Ansible"
+      color: "22"
+      #tags: "ipv4, test123, test321"

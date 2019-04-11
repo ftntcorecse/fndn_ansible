@@ -1,0 +1,32 @@
+---
+
+- name: CONFIG FMGR FIREWALL OBJECTS
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+
+  - name: ADD IPv4 IP ADDRESS RANGE OBJECT
+    fmgr_fwobj_address:
+      mode: "set"
+      adom: "ansible"
+      ipv4: "iprange"
+      start_ip: "10.7.220.1"
+      end_ip: "10.7.220.50"
+      name: "ansible_v4Obj_Range"
+      comment: "Dev Example for Ansible"
+      color: "22"
+      #tags: "ansible, ipv4, test123, test321"
+
+  - name: ADD IPv4 IP ADDRESS RANGE OBJECT 2
+    fmgr_fwobj_address:
+      mode: "set"
+      adom: "ansible"
+      ipv4: "iprange"
+      start_ip: "10.7.220.100"
+      end_ip: "10.7.220.150"
+      name: "ansible_v4Obj_Range2"
+      comment: "Dev Example for Ansible"
+      color: "22"
+      #tags: "ansible, ipv4, test123, test321"

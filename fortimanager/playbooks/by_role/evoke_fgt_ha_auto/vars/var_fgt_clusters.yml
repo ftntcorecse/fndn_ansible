@@ -1,0 +1,15 @@
+var_fgt_clusters:
+  - device_unique_name: "nyc-fgt-cluster"
+    device_username: "admin"
+    device_password: "fortinet"
+    device_ip: "192.168.50.1"
+    adom: "ansible"
+    nodes: ["nyc-fgt01", "nyc-fgt02", "nyc-fgt03"]
+
+  - device_unique_name: "seattle-fgt-cluster"
+    device_username: "admin"
+    device_password: "fortinet"
+    device_ip: "192.168.20.1"
+    adom: "ansible"
+    nodes: ["seattle-fgt01", "seattle-fgt02", "seattle-fgt03"]
+

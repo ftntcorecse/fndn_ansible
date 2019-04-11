@@ -1,0 +1,40 @@
+---
+
+- name: CONFIG FW POLICY PACKAGES AND FOLDERS
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+  - name: ADD PACKAGE WITH TARGETS
+    fmgr_fwpol_package:
+      mode: "add"
+      adom: "ansible"
+      name: "ansibleTestPackage1"
+      object_type: "pkg"
+      inspection_mode: "flow"
+      ngfw_mode: "profile-based"
+      scope_members: "FGT2, FGT3"
+
+  - name: ADD VERY BASIC IPV4 POLICY WITH NO NAT (WIDE OPEN)
+    fmgr_fwpol_ipv4:
+      mode: "set"
+      adom: "ansible"
+      package_name: "ansibleTestPackage1"
+      name: "ansibleTestRule1"
+      action: "accept"
+      dstaddr: "all"
+      srcaddr: "all"
+      dstintf: "any"
+      srcintf: "any"
+      logtraffic: "utm"
+      service: "ALL"
+      schedule: "always"
+
+  - name: INSTALL PACKAGE
+    fmgr_fwpol_package:
+      mode: "set"
+      adom: "ansible"
+      name: "ansibleTestPackage1"
+      object_type: "install"
+      scope_members: "FGT2, FGT3"

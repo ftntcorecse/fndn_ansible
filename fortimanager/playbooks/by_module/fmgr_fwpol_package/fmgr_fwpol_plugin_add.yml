@@ -1,0 +1,209 @@
+---
+
+- name: CONFIG FW POLICY PACKAGES AND FOLDERS
+  hosts: FortiManager
+  vars:
+    json_dump: "True"
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+#  - name: ADD PACKAGE WITH TARGETS
+#    fmgr_fwpol_package:
+#      mode: "add"
+#      adom: "ansible"
+#      name: "ansibleTestPackage1"
+#      object_type: "pkg"
+#      inspection_mode: "flow"
+#      ngfw_mode: "profile-based"
+#      scope_members: "FGT2, FGT3"
+#      scope_groups: "TestGroup"
+#
+#  - name: ADD PACKAGE MEMBERS
+#    fmgr_fwpol_package:
+#      mode: "add_targets"
+#      adom: "ansible"
+#      name: "ansibleTestPackage1"
+#      object_type: "pkg"
+#      scope_members: "FGT1"
+#      scope_groups: "testtest"
+#
+#  - name: REMOVE PACKAGE MEMBERS
+#    fmgr_fwpol_package:
+#      mode: "delete_targets"
+#      adom: "ansible"
+#      name: "ansibleTestPackage1"
+#      object_type: "pkg"
+#      scope_members: "FGT2"
+#      scope_groups: "TestGroup"
+#
+#  - name: ADD PACKAGE WITH TARGET GROUP
+#    fmgr_fwpol_package:
+#      mode: "set"
+#      adom: "ansible"
+#      name: "ansibleTestPackage1"
+#      object_type: "pkg"
+#      inspection_mode: "flow"
+#      ngfw_mode: "profile-based"
+#      scope_groups: "TestGroup"
+#
+  - name: ADD FOLDER
+    fmgr_fwpol_package:
+      mode: "set"
+      adom: "ansible"
+      name: "ansibleTestFolder1"
+      object_type: "folder"
+
+#  - name: ADD SECOND LEVEL FOLDER INTO PARENT FOLDER
+#    fmgr_fwpol_package:
+#      mode: "set"
+#      adom: "ansible"
+#      name: "ansibleTestFolder2"
+#      object_type: "folder"
+#      parent_folder: "ansibleTestFolder1"
+#
+#  - name: ADD THIRD LEVEL NESTED FOLDER
+#    fmgr_fwpol_package:
+#      mode: "set"
+#      adom: "ansible"
+#      name: "ansibleTestFolder3"
+#      object_type: "folder"
+#      parent_folder: "ansibleTestFolder1/ansibleTestFolder2"
+#
+#  - name: ADD FOURTH LEVEL NESTED FOLDER
+#    fmgr_fwpol_package:
+#      mode: "set"
+#      adom: "ansible"
+#      name: "ansibleTestFolder4"
+#      object_type: "folder"
+#      parent_folder: "ansibleTestFolder1/ansibleTestFolder2/ansibleTestFolder3"
+#
+#  - name: ADD PACKAGE INTO PARENT FOLDER 2
+#    fmgr_fwpol_package:
+#      mode: "set"
+#      adom: "ansible"
+#      name: "ansibleTestPackage2"
+#      object_type: "pkg"
+#      parent_folder: "ansibleTestFolder1"
+#      inspection_mode: "flow"
+#      ngfw_mode: "profile-based"
+#      scope_members: "FGT2, FGT3"
+#      scope_groups: "TestGroup"
+#
+#  - name: ADD PACKAGE MEMBERS 2
+#    fmgr_fwpol_package:
+#      mode: "add_targets"
+#      adom: "ansible"
+#      name: "ansibleTestPackage2"
+#      object_type: "pkg"
+#      scope_members: "FGT1, FGT2, FGT3"
+#      scope_groups: "testtest, TestGroup"
+#      parent_folder: "ansibleTestFolder1"
+#
+#  - name: REMOVE PACKAGE MEMBERS 2
+#    fmgr_fwpol_package:
+#      mode: "delete_targets"
+#      adom: "ansible"
+#      name: "ansibleTestPackage2"
+#      object_type: "pkg"
+#      scope_members: "FGT2"
+#      scope_groups: "TestGroup"
+#      parent_folder: "ansibleTestFolder1"
+#
+#
+#  - name: ADD PACKAGE INTO CHILD FOLDER 3
+#    fmgr_fwpol_package:
+#      mode: "set"
+#      adom: "ansible"
+#      name: "ansibleTestPackage3"
+#      object_type: "pkg"
+#      parent_folder: "ansibleTestFolder1/ansibleTestFolder2"
+#      inspection_mode: "flow"
+#      ngfw_mode: "profile-based"
+#      scope_members: "FGT2, FGT3"
+#      scope_groups: "TestGroup"
+#
+#  - name: ADD NESTED PACKAGE MEMBERS 3
+#    fmgr_fwpol_package:
+#      mode: "add_targets"
+#      adom: "ansible"
+#      name: "ansibleTestPackage3"
+#      object_type: "pkg"
+#      scope_members: "FGT1, FGT2, FGT3"
+#      scope_groups: "testtest, TestGroup"
+#      parent_folder: "ansibleTestFolder1/ansibleTestFolder2"
+#
+#  - name: REMOVE NESTED PACKAGE MEMBERS 3
+#    fmgr_fwpol_package:
+#      mode: "delete_targets"
+#      adom: "ansible"
+#      name: "ansibleTestPackage3"
+#      object_type: "pkg"
+#      scope_members: "FGT2"
+#      scope_groups: "TestGroup"
+#      parent_folder: "ansibleTestFolder1/ansibleTestFolder2"
+#
+#  - name: ADD PACKAGE INTO CHILD FOLDER 4
+#    fmgr_fwpol_package:
+#      mode: "set"
+#      adom: "ansible"
+#      name: "ansibleTestPackage4"
+#      object_type: "pkg"
+#      parent_folder: "ansibleTestFolder1/ansibleTestFolder2/ansibleTestFolder3"
+#      inspection_mode: "flow"
+#      ngfw_mode: "profile-based"
+#      scope_members: "FGT2, FGT3"
+#      scope_groups: "TestGroup"
+#
+#  - name: ADD NESTED PACKAGE MEMBERS 4
+#    fmgr_fwpol_package:
+#      mode: "add_targets"
+#      adom: "ansible"
+#      name: "ansibleTestPackage4"
+#      object_type: "pkg"
+#      scope_members: "FGT1, FGT2, FGT3"
+#      scope_groups: "testtest, TestGroup"
+#      parent_folder: "ansibleTestFolder1/ansibleTestFolder2/ansibleTestFolder3"
+#
+#  - name: REMOVE NESTED PACKAGE MEMBERS 4
+#    fmgr_fwpol_package:
+#      mode: "delete_targets"
+#      adom: "ansible"
+#      name: "ansibleTestPackage4"
+#      object_type: "pkg"
+#      scope_members: "FGT2"
+#      scope_groups: "TestGroup"
+#      parent_folder: "ansibleTestFolder1/ansibleTestFolder2/ansibleTestFolder3"
+#
+#
+#  - name: ADD PACKAGE INTO CHILD FOLDER 5
+#    fmgr_fwpol_package:
+#      mode: "set"
+#      adom: "ansible"
+#      name: "ansibleTestPackage5"
+#      object_type: "pkg"
+#      parent_folder: "ansibleTestFolder1/ansibleTestFolder2/ansibleTestFolder3/ansibleTestFolder4"
+#      inspection_mode: "flow"
+#      ngfw_mode: "profile-based"
+#      scope_members: "FGT2, FGT3"
+#      scope_groups: "TestGroup"
+#
+#  - name: ADD NESTED PACKAGE MEMBERS 5
+#    fmgr_fwpol_package:
+#      mode: "add_targets"
+#      adom: "ansible"
+#      name: "ansibleTestPackage5"
+#      object_type: "pkg"
+#      scope_members: "FGT1, FGT2, FGT3"
+#      scope_groups: "testtest, TestGroup"
+#      parent_folder: "ansibleTestFolder1/ansibleTestFolder2/ansibleTestFolder3/ansibleTestFolder4"
+#
+#  - name: REMOVE NESTED PACKAGE MEMBERS 5
+#    fmgr_fwpol_package:
+#      mode: "delete_targets"
+#      adom: "ansible"
+#      name: "ansibleTestPackage5"
+#      object_type: "pkg"
+#      scope_members: "FGT2"
+#      scope_groups: "TestGroup"
+#      parent_folder: "ansibleTestFolder1/ansibleTestFolder2/ansibleTestFolder3/ansibleTestFolder4"

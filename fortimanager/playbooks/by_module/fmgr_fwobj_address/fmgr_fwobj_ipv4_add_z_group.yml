@@ -1,0 +1,17 @@
+---
+
+- name: CONFIG FMGR FIREWALL OBJECTS
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+
+  - name: ADD IPv4 IP ADDRESS GROUP
+    fmgr_fwobj_address:
+      adom: "ansible"
+      mode: "add"
+      ipv4: "group"
+      group_name: "ansibleIPv4Group"
+      group_members: "Bluesnews, ansible_v4Obj_Range"
+      color: "22"

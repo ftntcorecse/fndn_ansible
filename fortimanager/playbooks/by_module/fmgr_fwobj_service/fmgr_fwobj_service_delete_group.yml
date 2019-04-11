@@ -1,0 +1,15 @@
+---
+
+- name: CONFIG CUSTOM SERVICES
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+
+  - name: ADD A CUSTOM SERVICE GROUP
+    fmgr_fwobj_service:
+      adom: "ansible"
+      object_type: "group"
+      group_name: "ansibleTestGroup"
+      mode: "delete"

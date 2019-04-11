@@ -1,0 +1,24 @@
+---
+- name: SET FORTIMANAGER HA MODE TO SLAVE
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+    - name: CREATE Profile
+      fmgr_secprof_av:
+        name: "Ansible_AV_Profile"
+        comment: "Created by Ansible Module TEST"
+        mode: "set"
+        inspection_mode: "proxy"
+        ftgd_analytics: "everything"
+        av_block_log: "enable"
+        av_virus_log: "enable"
+        scan_mode: "full"
+        mobile_malware_db: "enable"
+        ftp_archive_block: "encrypted"
+        ftp_outbreak_prevention: "files"
+        ftp_archive_log: "timeout"
+        ftp_emulator: "disable"
+        ftp_options: "scan"
+        adom: "ansible"

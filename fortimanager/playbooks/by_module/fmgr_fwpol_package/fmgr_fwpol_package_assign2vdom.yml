@@ -1,0 +1,21 @@
+---
+
+- name: CONFIG FW POLICY PACKAGES AND FOLDERS
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+  - name: ADD PACKAGE WITH TARGETS
+    fmgr_fwpol_package:
+      mode: "add"
+      adom: "ansible"
+      name: "ansibleTestPackage1"
+      object_type: "pkg"
+      inspection_mode: "flow"
+      ngfw_mode: "profile-based"
+      scope_members: "FGT1"
+      scope_members_vdom: "ansible1"
+
+
+

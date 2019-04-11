@@ -1,0 +1,12 @@
+---
+
+- name: SET FORTIMANAGER HA MODE TO STANDALONE
+  hosts: FortiManager, FortiManagerSlave
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+
+  - name: SET FORTIMANAGER HA NODE TO STANDALONE
+    fmgr_ha:
+      fmgr_ha_mode: "standalone"

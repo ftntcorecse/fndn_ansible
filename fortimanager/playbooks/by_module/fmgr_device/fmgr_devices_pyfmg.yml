@@ -1,0 +1,37 @@
+---
+- name: DISCOVER AND ADD DEVICES
+  hosts: FortiManager
+  connection: local
+  gather_facts: False
+
+  tasks:
+    - name: DISCOVER AND ADD DEVICE FGT1
+      fmgr_device:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        adom: "ansible"
+        device_username: "admin"
+        device_password: "fortinet"
+        device_ip: "10.7.220.151"
+        device_unique_name: "FGT1"
+#    - name: DISCOVER AND ADD DEVICE FGT2
+#      fmgr_device:
+#        host: "{{ inventory_hostname }}"
+#        username: "{{ username }}"
+#        password: "{{ password }}"
+#        adom: "ansible"
+#        device_username: "admin"
+#        device_password: "fortinet"
+#        device_ip: "10.7.220.152"
+#        device_unique_name: "FGT2"
+#    - name: DISCOVER AND ADD DEVICE FGT3
+#      fmgr_device:
+#        host: "{{ inventory_hostname }}"
+#        username: "{{ username }}"
+#        password: "{{ password }}"
+#        adom: "ansible"
+#        device_username: "admin"
+#        device_password: "fortinet"
+#        device_ip: "10.7.220.153"
+#        device_unique_name: "FGT3"

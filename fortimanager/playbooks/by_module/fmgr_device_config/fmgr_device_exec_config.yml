@@ -1,0 +1,18 @@
+---
+- name: DISCOVER AND ADD DEVICES
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+    - name: INSTALL CONFIG FGT1
+      fmgr_device_config:
+        adom: "ansible"
+        device_unique_name: "FGT1"
+        install_config: "enable"
+
+    - name: INSTALL CONFIG FGT2 and FGT3
+      fmgr_device_config:
+        adom: "ansible"
+        device_unique_name: "FGT2, FGT3"
+        install_config: "enable"

@@ -1,0 +1,38 @@
+---
+- name: DISCOVER AND ADD DEVICES via PLUGIN
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+    - name: DISCOVER AND ADD DEVICE FGT1
+      fmgr_device:
+        adom: "ansible"
+        device_username: "admin"
+        device_password: "fortinet"
+        device_ip: "10.7.220.151"
+        device_unique_name: "FGT1"
+        mode: "add"
+      ignore_errors: yes
+      ignore_unreachable: yes
+
+    - name: DISCOVER AND ADD DEVICE FGT2
+      fmgr_device:
+        adom: "ansible"
+        device_username: "admin"
+        device_password: "fortinet"
+        device_ip: "10.7.220.152"
+        device_unique_name: "FGT2"
+        #blind_add: "enable"
+      ignore_errors: yes
+      ignore_unreachable: yes
+
+    - name: DISCOVER AND ADD DEVICE FGT3
+      fmgr_device:
+        adom: "ansible"
+        device_username: "admin"
+        device_password: "fortinet"
+        device_ip: "10.7.220.153"
+        device_unique_name: "FGT3"
+      ignore_errors: yes
+      ignore_unreachable: yes

@@ -1,0 +1,19 @@
+---
+
+- name: CONFIG FMGR FIREWALL OBJECTS
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+
+  - name: ADD IPv4 IP ADDRESS WILDCARD OBJECT
+    fmgr_fwobj_address:
+      mode: "add"
+      adom: "ansible"
+      ipv4: "wildcard"
+      wildcard: "10.7.220.0/24"
+      name: "ansible_v4Obj_wildCard"
+      comment: "Dev Example for Ansible"
+      color: "22"
+      #tags: "ansible, ipv4, test123, test321"

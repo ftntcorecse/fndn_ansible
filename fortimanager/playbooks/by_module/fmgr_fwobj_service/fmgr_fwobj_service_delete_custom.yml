@@ -1,0 +1,51 @@
+---
+
+- name: CONFIG CUSTOM SERVICES
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+
+  - name: REMOVE A CUSTOM SERVICE FOR TCP/UDP/SCP
+    fmgr_fwobj_service:
+      adom: "ansible"
+      name: "ansible_custom_service"
+      object_type: "custom"
+      mode: "delete"
+
+  - name: REMOVE A CUSTOM SERVICE FOR TCP/UDP/SCP
+    fmgr_fwobj_service:
+      adom: "ansible"
+      name: "ansible_custom_icmp"
+      object_type: "custom"
+      mode: "delete"
+
+  - name: REMOVE A CUSTOM SERVICE FOR TCP/UDP/SCP
+    fmgr_fwobj_service:
+      adom: "ansible"
+      name: "ansible_custom_icmp6"
+      object_type: "custom"
+      mode: "delete"
+
+  - name: REMOVE A CUSTOM SERVICE FOR TCP/UDP/SCP
+    fmgr_fwobj_service:
+      adom: "ansible"
+      name: "ansible_custom_ip"
+      object_type: "custom"
+      mode: "delete"
+
+  - name: REMOVE A CUSTOM SERVICE FOR TCP/UDP/SCP
+    fmgr_fwobj_service:
+      adom: "ansible"
+      name: "ansible_custom_serviceWithSource"
+      object_type: "custom"
+      mode: "delete"
+
+  - name: REMOVE A CUSTOM PROXY ALL
+    fmgr_fwobj_service:
+      adom: "ansible"
+      name: "ansible_custom_proxy_all"
+      object_type: "custom"
+      mode: "delete"
+

@@ -1,0 +1,311 @@
+---
+- name: CREATE AND EXECUTE SCRIPTS
+  hosts: FortiManager
+  connection: local
+  gather_facts: False
+  vars_files:
+    - vars/var_fgts_to_provision.yml
+    - vars/var_fgt_intf_to_provision.yml
+    - vars/var_fgt_clusters.yml
+    - vars/var_fgt_ha_scripts.yml
+  vars:
+    missing_clusters: []
+    good_clusters: []
+    good_nodes: []
+    missing_nodes: []
+    missing_nodes_ip: []
+    bad_clusters: []
+    bad_nodes: []
+
+
+  tasks:
+    - name: QUERY FORTIGATE DEVICE BY FRIENDLY NAME
+      fmgr_query:
+        host: "{{inventory_hostname}}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        adom: "ansible"
+        object: "cluster_nodes"
+        device_unique_name: "{{ item.device_unique_name }}"
+        nodes: "{{ item.nodes }}"
+      with_items: "{{ var_fgt_clusters }}"
+      register: cluster
+      tags:
+        - generate_lists
+        - view_clusters
+
+    - debug: var=cluster
+      tags:
+        - generate_lists
+        - view_clusters2
+
+    - name: GET ANY CLUSTERS OK INTO A VARIABLE
+      set_fact:
+        good_clusters: "{{ good_clusters + [item.item.device_unique_name] }}"
+      with_items: "{{ cluster.results }}"
+      when: item.cluster_status == "OK"
+      #ignore_errors: yes
+      tags:
+        - generate_lists
+
+    - name: GET ANY GOOD NODES INTO A VARIABLE
+      set_fact:
+        good_nodes: "{{ good_nodes  + [item.good_nodes] }}"
+      with_items: "{{ cluster.results }}"
+      when: item.good_nodes is defined
+      tags:
+        - generate_lists
+
+    - name: GET ANY CLUSTERS MISSING INTO A VARIABLE
+      set_fact:
+        missing_clusters: "{{ missing_clusters + [item.item.device_unique_name] }}"
+      with_items: "{{ cluster.results }}"
+      when: item.cluster_status == "MISSING"
+      tags:
+        - generate_lists
+
+    - name: GET ANY BAD CLUSTER AND NODES INTO A VARIABLE
+      set_fact:
+        bad_clusters: "{{ bad_clusters + [item.item.device_unique_name] }}"
+      with_items: "{{ cluster.results }}"
+      when: item.cluster_status == "NOT-COMPLIANT"
+      tags:
+        - generate_lists
+
+    - name: GET ANY NODES NOT IN GOOD NODES LIST THAT WERE EXPECTED AND ADD TO BAD NODES
+      set_fact:
+        bad_nodes: "{{ bad_nodes  + (item.expected_nodes | difference(item.good_nodes) )}}"
+      with_items: "{{ cluster.results }}"
+      when: item.good_nodes is defined
+      tags:
+        - generate_lists
+
+    - name: GET MISSING CLUSTERS' NODES INTO A VARIABLE
+      set_fact:
+        missing_nodes: "{{ missing_nodes + item.nodes }}"
+      with_items: "{{ var_fgt_clusters }}"
+      when: (item.device_unique_name in missing_clusters)
+      tags:
+        - generate_lists
+
+    - name: GET MISSING CLUSTERS' NODES IP ADDRESSES INTO A VARIABLE
+      set_fact:
+        missing_nodes_ip: "{{ missing_nodes_ip + [item.device_ip] }}"
+      with_items: "{{ var_fgts_to_provision }}"
+      when: (item.device_unique_name in missing_nodes)
+      tags:
+        - generate_lists
+
+
+    - debug: var=good_clusters
+      tags:
+        - generate_lists
+    - debug: var=good_nodes
+      tags:
+        - generate_lists
+    - debug: var=bad_clusters
+      tags:
+        - generate_lists
+    - debug: var=bad_nodes
+      tags:
+        - generate_lists
+    - debug: var=missing_clusters
+      tags:
+        - generate_lists
+    - debug: var=missing_nodes
+      tags:
+        - generate_lists
+
+    - name: DELETE DEVICE BAD FGT CLUSTERS
+      fmgr_device:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        adom: "{{ item.adom }}"
+        device_unique_name: "{{ item.device_unique_name }}"
+        state: "absent"
+      tags:
+        - discover
+      with_items: "{{ var_fgt_clusters }}"
+      when: (item.device_unique_name in bad_clusters)
+      ignore_errors: yes
+      async: 240
+      poll: 10
+
+    - name: DISCOVER AND ADD DEVICES VIA LOOP
+      fmgr_device:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        adom: "{{ item.adom }}"
+        device_username: "{{ item.device_username }}"
+        device_password: "{{ item.device_password }}"
+        device_ip: "{{ item.device_ip }}"
+        device_unique_name: "{{ item.device_unique_name }}"
+      tags:
+        - discover
+      with_items: "{{ var_fgts_to_provision }}"
+      when: (item.device_unique_name in missing_nodes) or
+            (item.device_unique_name in bad_nodes)
+      ignore_errors: yes
+      register: discovery
+      async: 480
+      poll: 10
+
+    - debug: var=discovery
+
+    - name: CHANGE HOSTNAMES VIA LOOP
+      fmgr_device_config:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        device_hostname: "{{ item.device_hostname }}"
+        device_unique_name: "{{ item.device_unique_name }}"
+        adom: "{{ item.adom }}"
+      tags:
+        - hostname
+      with_items: "{{ var_fgts_to_provision }}"
+      when: (item.device_unique_name in missing_nodes) or
+            (item.device_unique_name in bad_nodes)
+      ignore_errors: yes
+
+    - name: EDIT INTERFACE INFORMATION ON FORTIGATES
+      fmgr_device_config:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        adom: "{{ item.adom }}"
+        device_unique_name: "{{ item.device_unique_name }}"
+        interface: "{{ item.interface }}"
+        interface_ip: "{{ item.interface_ip }}"
+        interface_allow_access: "{{ item.interface_allow_access }}"
+      tags:
+        - interface
+      with_items: "{{ var_fgt_intf_provision }}"
+      when: (item.device_unique_name in missing_nodes) or
+            (item.device_unique_name in bad_nodes)
+      ignore_errors: yes
+
+    - name: INSTALL NEW CONFIGS TO FORTIGATES
+      fmgr_device_config:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        adom: "{{ item.adom }}"
+        device_unique_name: "{{ item.device_unique_name }}"
+        install_config: "enable"
+      tags:
+        - config_install
+      with_items: "{{ var_fgts_to_provision }}"
+      when: (item.device_unique_name in missing_nodes) or
+            (item.device_unique_name in bad_nodes)
+      register: config_install
+      ignore_errors: yes
+
+    - name: QUERY FORTIMANAGER TASK ID UNTIL CONFIG IS DONE
+      fmgr_query:
+        host: "{{inventory_hostname}}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        adom: "ansible"
+        object: "task"
+        task_id: "{{ item.task }}"
+      with_items: "{{ config_install.results }}"
+      when: item.task is defined
+      register: config_query_results
+      until: config_query_results.percent == 100
+      retries: 30
+      delay: 5
+      tags:
+        - config_install
+      ignore_errors: yes
+
+#
+#    - pause:
+#        seconds: 60
+
+    - name: CREATE SCRIPT FOR CLUSTER INIT
+      fmgr_script:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        adom: "{{ item.adom }}"
+        script_name: "{{ item.script_name }}"
+        script_type: "{{ item.script_type }}"
+        script_target: "{{ item.script_target }}"
+        script_description: "{{ item.script_description }}"
+        script_content: "{{ item.script_content }}"
+      tags:
+        - create_script
+      with_items: "{{ var_fgt_ha_scripts }}"
+
+    - name: EXECUTE SCRIPT ON FORTIGATES
+      fmgr_script:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        adom: "{{ item.adom }}"
+        script_name: "{{ item.script_name }}"
+        state: "execute"
+        script_scope: "{{ item.device_unique_name }}"
+      tags:
+        - exec_script
+      with_items: "{{ var_fgts_to_provision }}"
+      when: (item.device_unique_name in missing_nodes) or
+            (item.device_unique_name in bad_nodes)
+      ignore_errors: yes
+      register: exec_script
+
+    - name: QUERY FORTIMANAGER TASK ID UNTIL SCRIPT INSTALL IS DONE
+      fmgr_query:
+        host: "{{inventory_hostname}}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        adom: "ansible"
+        object: "task"
+        task_id: "{{ item.task }}"
+      with_items: "{{ exec_script.results }}"
+      when: item.task is defined
+      register: script_query_results
+      until: script_query_results.percent == 100
+      retries: 30
+      delay: 5
+      tags:
+        - exec_script
+      ignore_errors: yes
+
+    - name: DELETE SINGLE FORTIGATES FROM FORTIMANAGER
+      fmgr_device:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        adom: "{{ item.adom }}"
+        device_unique_name: "{{ item.device_unique_name }}"
+        state: "absent"
+      tags:
+        - delete_fgts
+      with_items: "{{ var_fgts_to_provision }}"
+      when: (item.device_unique_name in missing_nodes) or
+            (item.device_unique_name in bad_nodes)
+      ignore_errors: yes
+      async: 7200
+      poll: 10
+
+    - name: DISCOVER AND ADD DEVICE FGT CLUSTER
+      fmgr_device:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        adom: "{{ item.adom }}"
+        device_username: "{{ item.device_username }}"
+        device_password: "{{ item.device_password }}"
+        device_ip: "{{ item.device_ip }}"
+        device_unique_name: "{{ item.device_unique_name }}"
+      tags:
+        - discover_cluster
+      with_items: "{{ var_fgt_clusters }}"
+      when: (item.device_unique_name in missing_clusters) or
+            (item.device_unique_name in bad_clusters)
+      ignore_errors: yes
+      async: 240
+      poll: 10

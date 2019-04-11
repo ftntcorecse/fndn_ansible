@@ -1,0 +1,25 @@
+---
+
+- name: CONFIG CUSTOM SERVICES
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+
+  # BASIC FULL PNAT MAPPING
+  - name: EDIT FMGR_FIREWALL_VIP PNAT
+    fmgr_fwobj_vip:
+      name: "Basic PNAT Map Port 10443"
+      mode: "set"
+      adom: "ansible"
+      type: "static-nat"
+      extip: "82.72.192.185"
+      extport: "10443"
+      extintf: "any"
+      portforward: "enable"
+      protocol: "tcp"
+      mappedip: "10.7.220.25"
+      mappedport: "443"
+      comment: "Created by Ansible"
+      color: "17"

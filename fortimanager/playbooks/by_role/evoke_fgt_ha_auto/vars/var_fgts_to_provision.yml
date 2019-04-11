@@ -1,0 +1,54 @@
+var_fgts_to_provision:
+  # FORTIGATE ONE
+  - device_unique_name: "seattle-fgt01"
+    device_hostname: "seattle-fgt01"
+    device_username: "admin"
+    device_password: "fortinet"
+    device_ip: "192.168.20.1"
+    adom: "ansible"
+    script_name: "seattle-fgt-ha01"
+
+  # FORTIGATE TWO
+  - device_unique_name: "seattle-fgt02"
+    device_hostname: "seattle-fgt02"
+    device_username: "admin"
+    device_password: "fortinet"
+    device_ip: "192.168.20.2"
+    adom: "ansible"
+    script_name: "seattle-fgt-ha01"
+
+  # FORTIGATE THREE
+  - device_unique_name: "seattle-fgt03"
+    device_hostname: "seattle-fgt03"
+    device_username: "admin"
+    device_password: "fortinet"
+    device_ip: "192.168.20.3"
+    adom: "ansible"
+    script_name: "seattle-fgt-ha01"
+
+  # FORTIGATE FOUR
+  - device_unique_name: "nyc-fgt01"
+    device_hostname: "nyc-fgt01"
+    device_username: "admin"
+    device_password: "fortinet"
+    device_ip: "192.168.50.1"
+    adom: "ansible"
+    script_name: "nyc-fgt-ha01"
+
+  # FORTIGATE FIVE
+  - device_unique_name: "nyc-fgt02"
+    device_hostname: "nyc-fgt02"
+    device_username: "admin"
+    device_password: "fortinet"
+    device_ip: "192.168.50.2"
+    adom: "ansible"
+    script_name: "nyc-fgt-ha01"
+
+  # FORTIGATE SIX
+  - device_unique_name: "nyc-fgt03"
+    device_hostname: "nyc-fgt03"
+    device_username: "admin"
+    device_password: "fortinet"
+    device_ip: "192.168.50.3"
+    adom: "ansible"
+    script_name: "nyc-fgt-ha01"

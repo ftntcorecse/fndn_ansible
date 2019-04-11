@@ -1,0 +1,15 @@
+---
+- name: SET FORTIMANAGER HA MODE TO MASTER
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+    - name: SET FORTIMANAGER HA NODE TO MASTER
+      fmgr_ha:
+        fmgr_ha_mode: "master"
+        fmgr_ha_cluster_pw: "fortinet"
+        fmgr_ha_cluster_id: "2"
+        fmgr_ha_hb_threshold: "10"
+        fmgr_ha_hb_interval: "15"
+        fmgr_ha_file_quota: "2048"

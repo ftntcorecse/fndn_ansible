@@ -1,0 +1,12 @@
+---
+- name: ADD FMG HA PEER
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+    - name: ENABLE FORTIMANAGER HA PEER
+      fmgr_ha:
+        fmgr_ha_peer_ipv4: "10.7.220.36"
+        fmgr_ha_peer_sn: "FMG-VMTM18001882"
+        fmgr_ha_peer_status: "enable"

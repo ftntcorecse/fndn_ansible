@@ -1,0 +1,18 @@
+---
+
+- name: CONFIG CUSTOM SERVICES
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+
+  - name: EDIT FMGR_FIREWALL_FQDN
+    fmgr_fwobj_vip:
+      name: "Basic FQDN Translation"
+      mode: "set"
+      adom: "ansible"
+      type: "fqdn"
+      mapped_addr: "google-play"
+      comment: "Created by Ansible"
+      color: "5"

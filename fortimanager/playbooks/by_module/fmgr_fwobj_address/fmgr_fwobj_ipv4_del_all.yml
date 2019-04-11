@@ -1,0 +1,127 @@
+---
+
+- name: CONFIG FMGR FIREWALL OBJECTS
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+
+  - name: DELETE IPv4 IP ADDRESS GROUP
+    fmgr_fwobj_address:
+      adom: "ansible"
+      mode: "delete"
+      ipv4: "group"
+      group_name: "ansibleIPv4Group"
+
+  - name: DELETE IPv4 IP ADDRESS RANGE OBJECT
+    fmgr_fwobj_address:
+      mode: "delete"
+      adom: "ansible"
+      ipv4: "iprange"
+      name: "ansible_v4Obj_Range"
+
+  - name: DELETE IPv4 IP ADDRESS RANGE OBJECT 3
+    fmgr_fwobj_address:
+      mode: "delete"
+      adom: "ansible"
+      ipv4: "iprange"
+      name: "ansible_v4Obj_MORE"
+
+  - name: DELETE IPv4 IP ADDRESS RANGE OBJECT 4
+    fmgr_fwobj_address:
+      mode: "delete"
+      adom: "ansible"
+      ipv4: "iprange"
+      name: "ansible_v4Obj_ipMask2"
+
+  - name: DELETE IPv4 IP ADDRESS RANGE OBJECT 2
+    fmgr_fwobj_address:
+      mode: "delete"
+      adom: "ansible"
+      ipv4: "iprange"
+      name: "ansible_v4Obj_Range2"
+
+  - name: DELETE IPv4 IP ADDRESS OBJECT
+    fmgr_fwobj_address:
+      mode: "delete"
+      adom: "ansible"
+      ipv4: "ipmask"
+      name: "ansible_v4Obj_ipMask"
+
+  - name: DELETE IPv4 IP ADDRESS OBJECT (NON CIDR TEST)
+    fmgr_fwobj_address:
+      mode: "delete"
+      adom: "ansible"
+      ipv4: "ipmask"
+      name: "ansible_v4Obj_Subnet2"
+
+  - name: DELETE IPv4 IP ADDRESS OBJECT (NON CIDR TEST) 2
+    fmgr_fwobj_address:
+      mode: "delete"
+      adom: "ansible"
+      ipv4: "ipmask"
+      name: "ansible_v4Obj_Subnet1"
+
+  - name: DELETE IPv4 IP ADDRESS WILDCARD OBJECT
+    fmgr_fwobj_address:
+      mode: "delete"
+      adom: "ansible"
+      ipv4: "wildcard"
+      name: "ansible_v4Obj_wildCard"
+
+  - name: DELETE IPv4 IP ADDRESS WILDCARD FQDN OBJECT
+    fmgr_fwobj_address:
+      ipv4: "wildcard-fqdn"
+      mode: "delete"
+      adom: "ansible"
+      name: "Synology myds DDNS service"
+
+  - name: DELETE IPv4 IP ADDRESS FQDN OBJECT
+    fmgr_fwobj_address:
+      ipv4: "fqdn"
+      mode: "delete"
+      adom: "ansible"
+      name: "Bluesnews"
+
+  - name: DELETE IPv4 IP ADDRESS GEO OBJECT
+    fmgr_fwobj_address:
+      ipv4: "geography"
+      mode: "delete"
+      adom: "ansible"
+      name: "ansible_geo"
+
+  - name: DELETE IPv6 IP ADDRESS GROUP
+    fmgr_fwobj_address:
+      adom: "ansible"
+      mode: "delete"
+      ipv6: "group"
+      group_name: "ansibleIPv6Group"
+
+  - name: DELETE IPv6 IP ADDRESS RANGE OBJECT
+    fmgr_fwobj_address:
+      mode: "delete"
+      adom: "ansible"
+      ipv6: "iprange"
+      name: "ansible_v6Obj_Range"
+
+  - name: DELETE IPv6 ADDRESS
+    fmgr_fwobj_address:
+      adom: "ansible"
+      mode: "delete"
+      ipv6: "ip"
+      name: "ansible_v6Obj"
+
+  - name: DELETE BROADCAST SUBNET
+    fmgr_fwobj_address:
+      adom: "ansible"
+      multicast: "broadcastmask"
+      mode: "delete"
+      name: "ansible_broadcastSubnet"
+
+  - name: DELETE MULTICAST RANGE
+    fmgr_fwobj_address:
+      adom: "ansible"
+      mode: "delete"
+      multicast: "multicastrange"
+      name: "ansible_multicastrange"

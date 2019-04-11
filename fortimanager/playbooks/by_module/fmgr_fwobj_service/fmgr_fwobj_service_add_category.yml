@@ -1,0 +1,16 @@
+---
+
+- name: CONFIG CUSTOM SERVICES
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+
+  - name: ADD A CUSTOM SERVICE CATEGORY
+    fmgr_fwobj_service:
+      adom: "ansible"
+      object_type: "category"
+      comment: "created by ansible"
+      category: "ansibleCategory5"
+      mode: "set"

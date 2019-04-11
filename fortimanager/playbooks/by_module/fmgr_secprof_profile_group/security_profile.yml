@@ -1,0 +1,20 @@
+---
+- name: Create and Delete security profile in FMG
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+
+  - name: DELETE Profile
+    fmgr_secprof_profile_group:
+      name: "Ansible_TEST_Profile_Group"
+      mode: "delete"
+
+
+  - name: CREATE Profile
+    fmgr_secprof_profile_group:
+      name: "Ansible_TEST_Profile_Group"
+      mode: "set"
+      av_profile: "Ansible_AV_Profile"
+      profile_protocol_options: "default"

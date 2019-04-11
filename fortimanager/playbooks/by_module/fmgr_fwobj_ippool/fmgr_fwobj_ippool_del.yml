@@ -1,0 +1,37 @@
+---
+
+- name: CONFIG FMGR FIREWALL OBJECTS
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+    - name: DELETE FMGR_FIREWALL_IPPOOL Overload
+      fmgr_fwobj_ippool:
+        mode: "delete"
+        adom: "ansible"
+        name: "Ansible_pool4_overload"
+        comments: "Created by ansible"
+
+    - name: DELETE FMGR_FIREWALL_IPPOOL Overload
+      fmgr_fwobj_ippool:
+        mode: "delete"
+        adom: "ansible"
+        name: "Ansible_pool4_121"
+        comments: "Created by ansible"
+
+    - name: DELETE FMGR_FIREWALL_IPPOOL Overload
+      fmgr_fwobj_ippool:
+        mode: "delete"
+        adom: "ansible"
+        name: "Ansible_pool4_fixed_port"
+        comments: "Created by ansible"
+
+
+
+    - name: DELETE FMGR_FIREWALL_IPPOOL Overload
+      fmgr_fwobj_ippool:
+        mode: "delete"
+        adom: "ansible"
+        name: "Ansible_pool4_port_block_allocation"
+        comments: "Created by ansible"

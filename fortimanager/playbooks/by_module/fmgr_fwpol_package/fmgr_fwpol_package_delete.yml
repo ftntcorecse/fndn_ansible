@@ -1,0 +1,40 @@
+---
+
+- name: CONFIG FW POLICY PACKAGES AND FOLDERS
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+  - name: REMOVE PACKAGE
+    fmgr_fwpol_package:
+      mode: "delete"
+      adom: "ansible"
+      name: "ansibleTestPackage1"
+      object_type: "pkg"
+
+  - name: REMOVE NESTED PACKAGE
+    fmgr_fwpol_package:
+      mode: "delete"
+      adom: "ansible"
+      name: "ansibleTestPackage2"
+      object_type: "pkg"
+      parent_folder: "ansibleTestFolder1"
+
+  - name: REMOVE NESTED FOLDER
+    fmgr_fwpol_package:
+      mode: "delete"
+      adom: "ansible"
+      name: "ansibleTestFolder2"
+      object_type: "folder"
+      parent_folder: "ansibleTestFolder1"
+
+  - name: REMOVE FOLDER
+    fmgr_fwpol_package:
+      mode: "delete"
+      adom: "ansible"
+      name: "ansibleTestFolder1"
+      object_type: "folder"
+
+
+

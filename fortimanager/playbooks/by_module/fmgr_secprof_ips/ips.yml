@@ -1,0 +1,34 @@
+---
+- name: Create and Delete security profile in FMG
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+
+#  - name: DELETE Profile
+#    fmgr_secprof_ips:
+#      name: "Ansible_IPS_Profile"
+#      comment: "Created by Ansible Module TEST"
+#      mode: "delete"
+
+  - name: CREATE Profile
+    fmgr_secprof_ips:
+      name: "Ansible_IPS_Profile"
+      comment: "Created by Ansible Module TEST"
+      mode: "set"
+      block_malicious_url: "enable"
+      entries: [{severity: "high", action: "block", log-packet: "enable"}, {severity: "medium", action: "pass"}]
+#      replacemsg_group: "test"
+
+#      replacemsg_group: [{admin: [{buffer: "buffer", format: "html", header: "http", msg-type: "test message"}],
+#
+#        alertmail: [{buffer: "buffer", format: "html", header: "http", msg-type: "test message"}],
+#        auth: [{buffer: "buffer", format: "text", header: "8bit", msg-type: "test message"}],
+#        comment: "Ansible",
+#        group-type: "utm",
+#        name: "replacement-message-ansible"
+#      }
+#      ]
+
+

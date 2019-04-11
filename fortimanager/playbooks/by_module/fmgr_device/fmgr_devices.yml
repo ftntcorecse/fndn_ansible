@@ -1,0 +1,23 @@
+---
+- name: DISCOVER AND ADD DEVICES
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+    - name: DISCOVER AND ADD DEVICE FGT1
+      fmgr_device:
+        adom: "root"
+        device_username: "admin"
+        device_password: "fortinet"
+        device_ip: "10.10.24.201"
+        device_unique_name: "FGT1"
+        device_serial: "FGVM000000117994"
+    - name: DISCOVER AND ADD DEVICE FGT2
+      fmgr_device:
+        adom: "root"
+        device_username: "admin"
+        device_password: "fortinet"
+        device_ip: "10.10.24.202"
+        device_unique_name: "FGT2"
+        device_serial: "FGVM000000117992"

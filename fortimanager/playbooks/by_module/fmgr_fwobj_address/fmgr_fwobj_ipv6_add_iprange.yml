@@ -1,0 +1,20 @@
+---
+
+- name: CONFIG FMGR FIREWALL OBJECTS
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+
+  - name: ADD IPv6 IP ADDRESS RANGE OBJECT
+    fmgr_fwobj_address:
+      mode: "add"
+      adom: "ansible"
+      ipv6: "iprange"
+      start_ip: "2001:0db8:85a3:0000:0000:8a2e:0370:7334"
+      end_ip: "2001:0db8:85a3:0000:0000:8a2e:0370:7446"
+      name: "ansible_v6Obj_Range"
+      comment: "Dev Example for Ansible"
+      color: "22"
+      #tags: "ansible, ipv4, test123, test321"

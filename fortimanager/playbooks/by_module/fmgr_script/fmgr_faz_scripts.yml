@@ -1,0 +1,27 @@
+---
+- name: CREATE AND EXECUTE SCRIPTS
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+    - name: CREATE SCRIPT
+      fmgr_script:
+        adom: "ansible"
+        script_name: "faz_init"
+        script_type: "cli"
+        script_target: "remote_device"
+        script_description: "Created by Ansible"
+        script_content: "config log fortianalyzer setting \n
+                          set status enable \n
+                          set server 10.7.220.38 \n
+                          set upload-option realtime \n
+                          set reliable enable \n
+                          end \n"
+
+    - name: EXECUTE SCRIPT
+      fmgr_script:
+        adom: "ansible"
+        script_name: "faz_init"
+        mode: "execute"
+        script_scope: "FGT1"

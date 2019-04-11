@@ -1,0 +1,34 @@
+---
+- name: CREATE DEVICE PROVISION TEMPLATES
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+#    - name: SET ADMIN GLOBAL SETTINGS
+#      fmgr_device_provision_template:
+#        provisioning_template: "testTemplate"
+#        mode: "set"
+#        adom: "ansible"
+#        admin_https_redirect: "enable"
+#        admin_timeout: "60"
+#        admin_gui_theme: "blue"
+#        admin_fortianalyzer_target: "10.7.220.38"
+#
+#    - name: SET PROVISIONING TEMPLATE DEVICE TARGETS IN FORTIMANAGER
+#      fmgr_device_provision_template:
+#        provisioning_template: "testTemplate"
+#        mode: "set"
+#        adom: "ansible"
+#        provision_targets: "seattle-fgt-cluster"
+
+
+    - name: INSTALL CONFIG
+      fmgr_device_config:
+        adom: "ansible"
+        device_unique_name: "seattle-fgt-cluster"
+        install_config: "enable"
+
+
+
+

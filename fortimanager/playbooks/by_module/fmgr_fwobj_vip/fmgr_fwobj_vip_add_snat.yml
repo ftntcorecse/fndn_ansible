@@ -1,0 +1,21 @@
+---
+
+- name: CONFIG CUSTOM SERVICES
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+
+  # BASIC FULL STATIC NAT MAPPING
+  - name: EDIT FMGR_FIREWALL_VIP SNAT
+    fmgr_fwobj_vip:
+      name: "Basic StaticNAT Map"
+      mode: "set"
+      adom: "ansible"
+      type: "static-nat"
+      extip: "82.72.192.185"
+      extintf: "any"
+      mappedip: "10.7.220.25"
+      comment: "Created by Ansible"
+      color: "17"

@@ -1,0 +1,34 @@
+---
+- name: DISCOVER AND ADD DEVICES
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+    - name: DISCOVER AND ADD DEVICE FGT4
+      fmgr_device:
+        #hard coded fortimanager example host and login -- see "fmg_group_add.yml for ansible host file version"
+        #HARD CODED LOGIN FOR FORTIMANAGER SEE "fmg_group_add.yml" example for anisble host version
+        #ADOM TO ADD THE DEVICE TO
+        adom: "ansible"
+        #DEVICE LOGIN
+        device_username: "admin"
+        device_password: "fortinet"
+        #DEVICE IP ADDRESS
+        device_ip: "10.7.220.164"
+        #FRIENDLY NAME FOR DEVICE IN FORTIMANAGER
+        device_unique_name: "FGT4"
+    - name: DISCOVER AND ADD DEVICE FGT5
+      fmgr_device:
+        adom: "ansible"
+        device_username: "admin"
+        device_password: "fortinet"
+        device_ip: "10.7.220.165"
+        device_unique_name: "FGT5"
+    - name: DISCOVER AND ADD DEVICE FGT6
+      fmgr_device:
+        adom: "ansible"
+        device_username: "admin"
+        device_password: "fortinet"
+        device_ip: "10.7.220.166"
+        device_unique_name: "FGT6"

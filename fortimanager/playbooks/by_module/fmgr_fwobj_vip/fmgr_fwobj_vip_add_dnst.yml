@@ -1,0 +1,20 @@
+---
+
+- name: CONFIG CUSTOM SERVICES
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+
+  - name: EDIT FMGR_FIREWALL_DNST
+    fmgr_fwobj_vip:
+      name: "Basic DNS Translation"
+      mode: "set"
+      adom: "ansible"
+      type: "dns-translation"
+      extip: "192.168.0.1-192.168.0.100"
+      extintf: "dmz"
+      mappedip: "3.3.3.0/24, 4.0.0.0/24"
+      comment: "Created by Ansible"
+      color: "12"

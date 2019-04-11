@@ -1,0 +1,14 @@
+---
+
+- name: CONFIG FMGR FIREWALL OBJECTS
+  hosts: FortiManager
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+
+  - name: DELETE FMGR_FIREWALL_IPPOOL6
+    fmgr_fwobj_ippool6:
+      mode: "delete"
+      adom: "ansible"
+      name: "IPv6 IPPool"
