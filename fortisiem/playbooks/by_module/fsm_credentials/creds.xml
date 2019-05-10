@@ -1,0 +1,29 @@
+<accessConfigs>
+    <accessMethods>
+        <accessMethod>
+            <accessProtocol>MS_WMI</accessProtocol>
+            <baseDN/>
+            <description/>
+            <name>MS-WMI-Domain_ABC</name>
+            <port/>
+            <pwdType>Manual</pwdType>
+            <pullInterval>5</pullInterval>
+            <credential>
+                <password>abc</password>
+                <principal>ABC/user123</principal>
+                <suPassword/>
+            </credential>
+            <deviceType >
+                <accessProtocols>MS_RPC,MS_WMI,LDAP</accessProtocols>
+                <model>Windows</model>
+                <vendor>Microsoft</vendor>
+                <version>ANY</version>
+            </deviceType>
+        </accessMethod>
+    </accessMethods>
+    <ipAccessMappings>
+        <ipAccessMapping>
+            <ipRange>1.1.1.1</ipRange>
+        </ipAccessMapping>
+    </ipAccessMappings>
+</accessConfigs>

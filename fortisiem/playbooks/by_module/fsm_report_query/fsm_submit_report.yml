@@ -1,0 +1,19 @@
+---
+- name: GET RESULTS FROM REPORT
+  hosts: FortiSIEM
+  connection: local
+  gather_facts: False
+
+  tasks:
+    - name: SUBMIT REPORT
+      fsm_report_query:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        ignore_ssl_errors: "enable"
+        report_file_path: "/root/top_fortisiem_events_by_count.xml"
+        export_json_to_file_path: "/root/report.json"
+        export_xml_to_file_path: "/root/report.xml"
+        export_csv_to_file_path: "/root/report.csv"
+
+

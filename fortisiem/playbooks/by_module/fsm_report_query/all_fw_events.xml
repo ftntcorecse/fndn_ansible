@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><Reports><Report baseline="" rsSync=""><Name>Get_All_firewall_events_last_15m</Name><Description>Get_All_firewall_events_last_15m - 03:13:07 PM Apr 09 2019</Description><CustomerScope groupByEachCustomer="true">
+<Include>1</Include>
+<Exclude/>
+</CustomerScope><SelectClause>
+<AttrList>phRecvTime,reptDevIpAddr,eventType,eventName,rawEventMsg</AttrList>
+</SelectClause><PatternClause>
+<SubPattern id="2414751" name="">
+<SingleEvtConstr>(reptDevIpAddr = 10.0.0.254) AND (phCustId IN (1))</SingleEvtConstr>
+</SubPattern>
+</PatternClause><userRoles>
+<roles custId="1">1698800</roles>
+</userRoles><SyncOrgs/><ReportInterval>
+<Low>1554839835</Low>
+<High>1554840734</High>
+</ReportInterval></Report></Reports>
+

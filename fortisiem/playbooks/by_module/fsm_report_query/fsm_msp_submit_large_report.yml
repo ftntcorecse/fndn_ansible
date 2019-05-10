@@ -1,0 +1,20 @@
+---
+- name: GET RESULTS FROM REPORT
+  hosts: FortiSIEM_MSP
+  connection: local
+  gather_facts: False
+
+  tasks:
+    - name: MSP SUBMIT LARGE REPORT
+      fsm_report_query:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        ignore_ssl_errors: "enable"
+        report_file_path: "/root/all_fw_events.xml"
+        export_json_to_screen: "enable"
+        export_json_to_file_path: "/root/msp_large_report.json"
+        export_xml_to_file_path: "/root/msp_large_report.xml"
+        export_csv_to_file_path: "/root/msp_large_report.csv"
+
+

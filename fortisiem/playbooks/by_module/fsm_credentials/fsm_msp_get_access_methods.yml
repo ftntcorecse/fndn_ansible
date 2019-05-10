@@ -1,0 +1,14 @@
+---
+- name: MSP GET ACCESS METHODS
+  hosts: FortiSIEM_MSP
+  connection: local
+  gather_facts: False
+
+  tasks:
+  - name: MSP GET ALL CREDENTIALS
+    fsm_credentials:
+      host: "{{ inventory_hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      ignore_ssl_errors: "enable"
+      mode: "get"

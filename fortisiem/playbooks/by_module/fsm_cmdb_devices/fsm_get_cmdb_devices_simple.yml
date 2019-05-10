@@ -1,0 +1,35 @@
+---
+- name: GET CMDB DEVICES
+  hosts: FortiSIEM
+  connection: local
+  gather_facts: False
+
+  tasks:
+    - name: GET SIMPLE DEVICE LIST FROM CMDB
+      fsm_cmdb_devices:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        ignore_ssl_errors: "enable"
+        mode: "short_all"
+        export_json_to_screen: "enable"
+        export_json_to_file_path: "/root/simple_cmdb_list.json"
+        export_xml_to_file_path: "/root/simple_cmdb_list.xml"
+
+    - name: GET SIMPLE DEVICE LIST FROM CMDB IP RANGE
+      fsm_cmdb_devices:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        ignore_ssl_errors: "enable"
+        mode: "ip_range"
+        ip_range: "10.0.0.100-10.0.0.120"
+
+    - name: GET DETAILED INFO ON ONE DEVICE
+      fsm_cmdb_devices:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        ignore_ssl_errors: "enable"
+        mode: "detailed_single"
+        ip: "10.0.0.5"

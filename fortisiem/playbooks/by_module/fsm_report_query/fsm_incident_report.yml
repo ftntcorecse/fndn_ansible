@@ -1,0 +1,23 @@
+---
+- name: GET RESULTS FROM REPORT
+  hosts: FortiSIEM
+  connection: local
+  gather_facts: False
+
+  tasks:
+    - name: GET AN INCIDENT REPORT DIFFERENT MORE DETAIL
+      fsm_report_query:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        ignore_ssl_errors: "enable"
+        report_file_path: "top-devices-and-incidents.xml"
+        report_absolute_begin_date: "04/13/2019"
+        report_absolute_begin_time: "060000"
+        report_absolute_end_date: "04/18/2019"
+        report_absolute_end_time: "150000"
+        export_json_to_screen: "enable"
+        export_json_to_file_path: "/root/incident_report.json"
+        export_xml_to_file_path: "/root/incident_report.xml"
+
+

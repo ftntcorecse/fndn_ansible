@@ -1,0 +1,38 @@
+---
+- name: GET LIST OF ORGS
+  hosts: FortiSIEM_MSP
+  connection: local
+  gather_facts: False
+
+  tasks:
+    - name: GET SIMPLE DEVICE LIST OF ORGS
+      fsm_organizations:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        ignore_ssl_errors: "enable"
+        mode: "get"
+        export_json_to_screen: "enable"
+        export_json_to_file_path: "/root/msp_json_test_out_orgs.json"
+        export_xml_to_file_path: "/root/msp_xml_test_out_orgs.xml"
+
+
+
+    - name: ADD AN ORG WITH COLLECTOR VIA PARAMETERS
+      fsm_organizations:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        ignore_ssl_errors: "enable"
+        mode: "add"
+        org_name: "ansibleOrg1"
+        org_display_name: "Ansible Test Org 1"
+        org_description: "Testing Ansible. Duh."
+        org_admin_username: "ansibleTest1"
+        org_admin_password: "admin*1"
+        org_admin_email: "ansible@test1.com"
+        org_eps: "500"
+        org_include_ip_range: "192.168.10.1-192.168.10.50"
+        org_exclude_ip_range: "192.168.10.51-192.168.10.255"
+        org_collector_name: "ansibleOrg1Col1"
+        org_collector_eps: "200"

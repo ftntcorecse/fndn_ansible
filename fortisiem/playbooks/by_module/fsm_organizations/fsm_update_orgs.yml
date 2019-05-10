@@ -1,0 +1,42 @@
+---
+- name: ADD ORGS
+  hosts: FortiSIEM_MSP
+  connection: local
+  gather_facts: False
+
+  tasks:
+    - name: ADD AN ORG WITH COLLECTOR VIA PARAMETERS
+      fsm_organizations:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        ignore_ssl_errors: "enable"
+        mode: "update"
+        export_json_to_screen: "enable"
+        org_name: "ansibleOrg1"
+        org_display_name: "Ansible Test Org 1"
+        org_description: "Testing Ansible. Duh. Updated."
+        org_eps: "400"
+        org_include_ip_range: "192.168.10.1-192.168.10.50"
+        org_exclude_ip_range: "192.168.10.51-192.168.10.255"
+        org_collector_name: "ansibleOrg1Col1"
+        org_collector_eps: "100"
+      ignore_errors: yes
+
+
+
+    - name: ADD AN ORG WITH COLLECTOR VIA JSON
+      fsm_organizations:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        ignore_ssl_errors: "enable"
+        mode: "update"
+        org_name: "ansibleOrg2"
+        org_display_name: "Ansible Test Org 2"
+        org_description: "Testing Ansible. Duh. Again. Updated."
+        org_eps: "400"
+        org_include_ip_range: "192.168.20.1-192.168.20.50"
+        org_exclude_ip_range: "192.168.20.51-192.168.20.255"
+        org_collectors: [{'name': 'ansibleOrg2Col1', 'eps': '100'},{'name': 'ansibleOrg2Col2', 'eps': '100'}]
+      ignore_errors: yes

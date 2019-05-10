@@ -1,0 +1,31 @@
+---
+- name: GET RESULTS FROM REPORT
+  hosts: FortiSIEM
+  connection: local
+  gather_facts: False
+
+  tasks:
+    - name: VERIFY A DEVICE
+      fsm_verify_device_ip:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        ignore_ssl_errors: "enable"
+        ip_to_verify: "10.0.0.5"
+        export_json_to_file_path: "/root/deviceExists.json"
+        append_results_to_file: "/root/verification.csv"
+
+#    - name: TEST VERIFY A DEVICE THAT DOESN'T EXIST
+#      fsm_verify_device_ip:
+#        host: "{{ inventory_hostname }}"
+#        username: "{{ username }}"
+#        password: "{{ password }}"
+#        ignore_ssl_errors: "enable"
+#        ip_to_verify: "10.0.0.45"
+#        export_json_to_file_path: "/root/deviceNoExist.json"
+#        append_results_to_file: "/root/verification.csv"
+
+#        export_json_to_screen: "enable"
+#        export_xml_to_file_path: "/root/deviceNoExist.xml"
+
+

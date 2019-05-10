@@ -1,0 +1,10 @@
+<configureMonitoring>
+    <systemMonitors>
+        <systemMonitor ip = "10.0.0.5" method = "SNMP" type = "CPU Util" enable = "true" interval = "120"/>
+        <systemMonitor ip = "10.0.0.5" method = "VMSDK" type = "VMware Hardware Status" enable = "true" interval = "120"/>
+    </systemMonitors>
+    <eventPullingObjs>
+        <eventPullingObj ip="10.0.0.10" method="VM_SDK" enable="true"/>
+        <eventPullingObj ip="10.0.0.138" method="MS_WMI" enable="true"/>
+    </eventPullingObjs>
+</configureMonitoring>

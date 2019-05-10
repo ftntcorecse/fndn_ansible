@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Reports>
+    <Report baseline="" rsSync="">
+        <Name>Top FortiSIEM Events By Count</Name>
+        <Description>Ranks the events by the number of times they have occurred in a given time period.</Description>
+        <CustomerScope groupByEachCustomer="false">
+        </CustomerScope>
+        <SelectClause>
+            <AttrList>eventType,COUNT(*)</AttrList>
+        </SelectClause>
+        <OrderByClause>
+            <AttrList>COUNT(*) DESC</AttrList>
+        </OrderByClause>
+        <PatternClause window="3600">
+            <SubPattern id="1164394" name="Filter_OVERALL_STATUS">
+                <GroupByAttr>eventType</GroupByAttr>
+            </SubPattern>
+        </PatternClause>
+        <userRoles>
+            <roles custId="0">1169250</roles>
+        </userRoles>
+        <SyncOrgs/>
+    </Report>
+</Reports>

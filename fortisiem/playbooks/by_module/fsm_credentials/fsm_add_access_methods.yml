@@ -1,0 +1,212 @@
+---
+- name: ADD ACCESS METHODS
+  hosts: FortiSIEM
+  connection: local
+  gather_facts: False
+
+  tasks:
+  - name: ADD AN SSH CREDENTIAL FROM FILE
+    fsm_credentials:
+      host: "{{ inventory_hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      ignore_ssl_errors: "enable"
+      input_xml_file: "creds2.xml"
+      mode: "add"
+
+  - name: ADD AN VM_SDK CREDENTIAL
+    fsm_credentials:
+      host: "{{ inventory_hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      ignore_ssl_errors: "enable"
+      cred_username: "fortinet"
+      cred_password: "fortinet123!"
+      access_protocol: "vm_sdk"
+      friendly_name: "AnsibleTestVMSDKCred"
+      description: "Created by api_user, and Ansible."
+      mode: "add"
+
+  - name: ADD AN SSH CREDENTIAL FOR ELEVATED DEVICE
+    fsm_credentials:
+      host: "{{ inventory_hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      ignore_ssl_errors: "enable"
+      cred_username: "fortinet"
+      cred_password: "fortinet123!"
+      super_password: "fortinet321!"
+      access_protocol: "ssh"
+      friendly_name: "AnsibleTestCiscoCred"
+      description: "Created by api_user, and Ansible."
+      mode: "add"
+
+  - name: ADD AN FTP CREDENTIAL
+    fsm_credentials:
+      host: "{{ inventory_hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      ignore_ssl_errors: "enable"
+      cred_username: "fortinet_ftp"
+      cred_password: "fortinet123!"
+      access_protocol: "ftp"
+      friendly_name: "AnsibleTestFTPCred"
+      description: "Created by api_user, and Ansible."
+      mode: "add"
+
+  - name: ADD AN FTP OVER SLL CREDENTIAL
+    fsm_credentials:
+      host: "{{ inventory_hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      ignore_ssl_errors: "enable"
+      cred_username: "fortinet_ftp"
+      cred_password: "fortinet123!"
+      access_protocol: "ftp_over_ssl"
+      friendly_name: "AnsibleTestFTPSSLCred"
+      description: "Created by api_user, and Ansible."
+      mode: "add"
+
+  - name: ADD AN IMAP CREDENTIAL
+    fsm_credentials:
+      host: "{{ inventory_hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      ignore_ssl_errors: "enable"
+      cred_username: "fortinet_imap"
+      cred_password: "fortinet123!"
+      access_protocol: "imap"
+      friendly_name: "AnsibleTestIMAPCred"
+      description: "Created by api_user, and Ansible."
+      mode: "add"
+
+
+  - name: ADD AN IMAP OVER SSL CREDENTIAL
+    fsm_credentials:
+      host: "{{ inventory_hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      ignore_ssl_errors: "enable"
+      cred_username: "fortinet_imapssl"
+      cred_password: "fortinet123!"
+      access_protocol: "imap_over_ssl"
+      friendly_name: "AnsibleTestIMAPSSLCred"
+      description: "Created by api_user, and Ansible."
+      mode: "add"
+
+  - name: ADD AN JDBC CREDENTIAL
+    fsm_credentials:
+      host: "{{ inventory_hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      ignore_ssl_errors: "enable"
+      cred_username: "fortinet_jdbc"
+      cred_password: "fortinet123!"
+      access_protocol: "jdbc"
+      friendly_name: "AnsibleTestJDBCCred"
+      description: "Created by api_user, and Ansible."
+      mode: "add"
+
+  - name: ADD AN JMX CREDENTIAL
+    fsm_credentials:
+      host: "{{ inventory_hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      ignore_ssl_errors: "enable"
+      cred_username: "fortinet_jmx"
+      cred_password: "fortinet123!"
+      access_protocol: "jmx"
+      friendly_name: "AnsibleTestJMXCred"
+      description: "Created by api_user, and Ansible."
+      mode: "add"
+
+  - name: ADD AN POP3 CREDENTIAL
+    fsm_credentials:
+      host: "{{ inventory_hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      ignore_ssl_errors: "enable"
+      cred_username: "fortinet_pop3"
+      cred_password: "fortinet123!"
+      access_protocol: "pop3"
+      friendly_name: "AnsibleTestPOP3Cred"
+      description: "Created by api_user, and Ansible."
+      mode: "add"
+
+  - name: ADD AN POP3 OVER SSL CREDENTIAL
+    fsm_credentials:
+      host: "{{ inventory_hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      ignore_ssl_errors: "enable"
+      cred_username: "fortinet_pop3ssl"
+      cred_password: "fortinet123!"
+      access_protocol: "pop3_over_ssl"
+      friendly_name: "AnsibleTestPOP3SSLCred"
+      description: "Created by api_user, and Ansible."
+      mode: "add"
+
+  - name: ADD AN smtp CREDENTIAL
+    fsm_credentials:
+      host: "{{ inventory_hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      ignore_ssl_errors: "enable"
+      cred_username: "fortinet_smtp"
+      cred_password: "fortinet123!"
+      access_protocol: "smtp"
+      friendly_name: "AnsibleTestSMTPCred"
+      description: "Created by api_user, and Ansible."
+      mode: "add"
+
+  - name: ADD AN smtp_over_ssl CREDENTIAL
+    fsm_credentials:
+      host: "{{ inventory_hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      ignore_ssl_errors: "enable"
+      cred_username: "fortinet_smtp_over_ssl"
+      cred_password: "fortinet123!"
+      access_protocol: "smtp_over_ssl"
+      friendly_name: "AnsibleTestsmtp_over_sslCred"
+      description: "Created by api_user, and Ansible."
+      mode: "add"
+
+  - name: ADD AN smtp_over_tls CREDENTIAL
+    fsm_credentials:
+      host: "{{ inventory_hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      ignore_ssl_errors: "enable"
+      cred_username: "fortinet_smtp_over_tls"
+      cred_password: "fortinet123!"
+      access_protocol: "smtp_over_tls"
+      friendly_name: "AnsibleTestsmtp_over_tlsCred"
+      description: "Created by api_user, and Ansible."
+      mode: "add"
+
+  - name: ADD AN FTP CREDENTIAL
+    fsm_credentials:
+      host: "{{ inventory_hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      ignore_ssl_errors: "enable"
+      cred_username: "fortinet_ftp"
+      cred_password: "fortinet123!"
+      access_protocol: "ftp"
+      friendly_name: "AnsibleTestFTPCred"
+      description: "Created by api_user, and Ansible."
+      mode: "add"
+
+  - name: ADD AN telnet CREDENTIAL
+    fsm_credentials:
+      host: "{{ inventory_hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      ignore_ssl_errors: "enable"
+      cred_username: "fortinet_telnet"
+      cred_password: "fortinet123!"
+      access_protocol: "telnet"
+      friendly_name: "AnsibleTesttelnetred"
+      description: "Created by api_user, and Ansible."
+      mode: "add"

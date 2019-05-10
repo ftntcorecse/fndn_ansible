@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<accessConfigs>
+    <accessMethods>
+        <accessMethod creationTime="1557441071533" custId="2056" entityVersion="0" id="2305600"
+                      lastModified="1557441071533" ownerId="500151" xmlId="AccessMethod@2305600">
+            <accessProtocol>FTP</accessProtocol>
+            <baseDN/>
+            <caAddress>false</caAddress>
+            <description/>
+            <name>test123</name>
+            <port>21</port>
+            <pullInterval>5</pullInterval>
+            <pwdType>Manual</pwdType>
+            <useLDAP>false</useLDAP>
+            <credential creationTime="1557441071534" custId="2056" entityVersion="0" id="2305650"
+                        lastModified="1557441071534" ownerId="0" xmlId="Credential@2305650">
+                <password>AES$83173CC2D07E45B1548CD9F0F4592C2B</password>
+                <principal>test</principal>
+                <suPassword/>
+            </credential>
+            <deviceType creationTime="1555436989024" custId="0" entityVersion="1" id="794651"
+                        lastModified="1556344621972" ownerId="0" xmlId="DeviceType@794651">
+                <type>Appliance</type>
+                <eventParsed>false</eventParsed>
+                <jobWeight>10</jobWeight>
+                <model>Generic</model>
+                <objectGroup>PH_SYS_DEVICE_GENERIC</objectGroup>
+                <priority>0</priority>
+                <sysDefined>true</sysDefined>
+                <vendor>Generic</vendor>
+                <version>ANY</version>
+            </deviceType>
+        </accessMethod>
+    </accessMethods>
+    <ipAccessMappings>
+        <ipAccessMapping creationTime="1557441080093" custId="2056" entityVersion="0" id="2305700"
+                         lastModified="1557441080093" ownerId="0" xmlId="IpAccessMapping@2305700">
+            <collectorId>10034</collectorId>
+            <accessMethodId>2305600</accessMethodId>
+            <ipRange>10.1.1.1</ipRange>
+        </ipAccessMapping>
+        <ipAccessMapping creationTime="1557441088108" custId="2056" entityVersion="0" id="2305701"
+                         lastModified="1557441088108" ownerId="0" xmlId="IpAccessMapping@2305701">
+            <collectorId>10035</collectorId>
+            <accessMethodId>2305600</accessMethodId>
+            <ipRange>10.0.0.2</ipRange>
+        </ipAccessMapping>
+    </ipAccessMappings>
+</accessConfigs>

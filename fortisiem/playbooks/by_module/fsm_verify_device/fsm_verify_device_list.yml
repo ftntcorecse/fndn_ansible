@@ -1,0 +1,16 @@
+---
+- name: GET RESULTS FROM REPORT FROM LIST
+  hosts: FortiSIEM
+  connection: local
+  gather_facts: False
+
+  tasks:
+    - name: VERIFY A DEVICE FROM A LIST
+      fsm_verify_device_ip:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        ignore_ssl_errors: "enable"
+        ip_list_to_verify: ["10.0.0.5", "10.0.0.10", "10.0.0.254"]
+        export_json_to_file_path: "/root/deviceExistsList.json"
+        append_results_to_file: "/root/verificationList.csv"

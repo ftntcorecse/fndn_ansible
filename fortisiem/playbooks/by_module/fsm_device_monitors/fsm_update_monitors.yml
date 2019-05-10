@@ -1,0 +1,30 @@
+---
+- name: GET DEVICE MONITORS
+  hosts: FortiSIEM
+  connection: local
+  gather_facts: False
+
+  tasks:
+    - name: DISABLE MONITORS
+      fsm_device_monitors:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        ignore_ssl_errors: "enable"
+        mode: "update"
+        export_json_to_screen: "enable"
+        export_json_to_file_path: "/root/disable_monitors.json"
+        export_xml_to_file_path: "/root/disable_monitors.xml"
+        update_xml_file: "/root/git/dev_queue/examples/fsm_device_monitors/disable_monitors.xml"
+
+#    - name: ENABLE MONITORS
+#      fsm_device_monitors:
+#        host: "{{ inventory_hostname }}"
+#        username: "{{ username }}"
+#        password: "{{ password }}"
+#        ignore_ssl_errors: "enable"
+#        mode: "update"
+#        export_json_to_screen: "enable"
+#        export_json_to_file_path: "/root/enable_monitors.json"
+#        export_xml_to_file_path: "/root/enable_monitors.xml"
+#        update_xml_file: "/root/git/dev_queue/examples/fsm_device_monitors/enable_monitors.xml"

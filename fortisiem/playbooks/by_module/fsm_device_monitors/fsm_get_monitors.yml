@@ -1,0 +1,41 @@
+---
+- name: GET DEVICE MONITORS
+  hosts: FortiSIEM
+  connection: local
+  gather_facts: False
+
+  tasks:
+    - name: GET SIMPLE MONITOR LIST FROM CMDB
+      fsm_device_monitors:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        ignore_ssl_errors: "enable"
+        mode: "short_all"
+        export_json_to_screen: "enable"
+        export_json_to_file_path: "/root/monitors_out1.json"
+        export_xml_to_file_path: "/root/monitors_out1.xml"
+
+    - name: GET SIMPLE MONITOR LIST FROM CMDB IP RANGE
+      fsm_device_monitors:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        ignore_ssl_errors: "enable"
+        mode: "ip_range"
+        ip_range: "10.0.0.5-10.0.0.15"
+        export_json_to_screen: "enable"
+        export_json_to_file_path: "/root/monitors_out2.json"
+        export_xml_to_file_path: "/root/monitors_out2.xml"
+
+    - name: GET DETAILED MONITOR INFO ON ONE DEVICE
+      fsm_device_monitors:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        ignore_ssl_errors: "enable"
+        mode: "detailed_single"
+        ip: "10.0.0.5"
+        export_json_to_screen: "enable"
+        export_json_to_file_path: "/root/monitors_out3.json"
+        export_xml_to_file_path: "/root/monitors_out3.xml"

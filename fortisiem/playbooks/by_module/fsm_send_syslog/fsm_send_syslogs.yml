@@ -1,0 +1,52 @@
+---
+- name: SEND SYSLOGS
+  hosts: FortiSIEM
+  connection: local
+  gather_facts: False
+
+  tasks:
+    - name: SEND UDP/514 SYSLOG WITH AUTO HEADER
+      fsm_send_syslog:
+        syslog_host: "{{ inventory_hostname }}"
+        ignore_ssl_errors: "enable"
+        syslog_message: "This is a test syslog from Ansible!"
+
+    - name: SEND UDP/514 SYSLOG WITH AUTO HEADER AND DIFF FACILITY AND LEVEL
+      fsm_send_syslog:
+        syslog_host: "{{ inventory_hostname }}"
+        ignore_ssl_errors: "enable"
+        syslog_facility: "AUTH"
+        syslog_level: "CRIT"
+        syslog_message: "This is a test syslog from Ansible! WITH CRIT AND AUTH AS LEVELS AND FACILITY."
+
+    - name: SEND UDP/514 SYSLOG WITH AUTO HEADER
+      fsm_send_syslog:
+        syslog_host: "{{ inventory_hostname }}"
+        ignore_ssl_errors: "enable"
+        syslog_message: "This is a test syslog from Ansible!"
+
+    - name: SEND UDP/514 SYSLOG CUSTOM HEADER
+      fsm_send_syslog:
+        syslog_host: "{{ inventory_hostname }}"
+        ignore_ssl_errors: "enable"
+        syslog_message: "This is a test syslog from Ansible!"
+        syslog_header: "This is a TEST HEADER :"
+
+    - name: SEND TCP/1470 SYSLOG WITH CUSTOM HEADER
+      fsm_send_syslog:
+        syslog_host: "{{ inventory_hostname }}"
+        ignore_ssl_errors: "enable"
+        network_port: 1470
+        network_protocol: "tcp"
+        syslog_message: "This is a test syslog from Ansible!"
+        syslog_header: "This is a TEST HEADER TCP PORT 1470 :"
+
+    - name: SEND TCP/6514 TLS SYSLOG WITH CUSTOM HEADER
+      fsm_send_syslog:
+        syslog_host: "{{ inventory_hostname }}"
+        ignore_ssl_errors: "enable"
+        network_port: 6514
+        network_protocol: "tcp-tls1.2"
+        syslog_message: "This is a test syslog from Ansible!"
+        syslog_header: "This is a TEST HEADER TCP TLS PORT 6514 :"
+

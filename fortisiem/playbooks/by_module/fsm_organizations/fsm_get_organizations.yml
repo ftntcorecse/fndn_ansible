@@ -1,0 +1,14 @@
+---
+- name: GET LIST OF ORGS
+  hosts: FortiSIEM
+  connection: local
+  gather_facts: False
+
+  tasks:
+    - name: GET SIMPLE DEVICE LIST OF ORGS
+      fsm_organizations:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        ignore_ssl_errors: "enable"
+        mode: "get"

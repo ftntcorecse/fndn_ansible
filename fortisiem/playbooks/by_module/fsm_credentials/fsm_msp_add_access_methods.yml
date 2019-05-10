@@ -1,0 +1,32 @@
+---
+- name: MSP ADD ACCESS METHODS
+  hosts: FortiSIEM_MSP
+  connection: local
+  gather_facts: False
+
+  tasks:
+  - name: MSP ADD AN SSH CREDENTIAL
+    fsm_credentials:
+      host: "{{ inventory_hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      ignore_ssl_errors: "enable"
+      cred_username: "fortinet"
+      cred_password: "fortinet123!"
+      access_protocol: "ssh"
+      description: "AnsibleTestSSHCred"
+      mode: "add"
+      friendly_name: "AnsibleTestSSHCred"
+
+  - name: MSP ADD AN SSH CREDENTIAL TEST ORG
+    fsm_credentials:
+      host: "{{ inventory_hostname }}"
+      username: "adfs/api_user"
+      password: "{{ password }}"
+      ignore_ssl_errors: "enable"
+      cred_username: "fortinet"
+      cred_password: "fortinet123!"
+      access_protocol: "ssh"
+      description: "AnsibleTestSSHCred"
+      mode: "add"
+      friendly_name: "AnsibleTestSSHCred"

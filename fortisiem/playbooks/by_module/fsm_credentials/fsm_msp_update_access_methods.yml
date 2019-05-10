@@ -1,0 +1,34 @@
+---
+- name: MSP UPDATE ACCESS METHODS
+  hosts: FortiSIEM_MSP
+  connection: local
+  gather_facts: False
+
+  tasks:
+  - name: MSP UPDATE AN SSH CREDENTIAL
+    fsm_credentials:
+      host: "{{ inventory_hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      ignore_ssl_errors: "enable"
+      cred_username: "fortinet"
+      cred_password: "fortinet123!123"
+      access_protocol: "ssh"
+      description: "AnsibleTestSSHCredUPDATE"
+      mode: "update"
+      friendly_name: "AnsibleTestSSHCred"
+      ip_range: "10.7.220.100"
+
+  - name: MSP UPDATE AN SSH CREDENTIAL TEST ORG
+    fsm_credentials:
+      host: "{{ inventory_hostname }}"
+      username: "adfs/api_user"
+      password: "{{ password }}"
+      ignore_ssl_errors: "enable"
+      cred_username: "fortinet"
+      cred_password: "fortinet123!123"
+      access_protocol: "ssh"
+      description: "AnsibleTestSSHCredUPDATE"
+      mode: "update"
+      friendly_name: "AnsibleTestSSHCred"
+      ip_range: "10.7.220.100"

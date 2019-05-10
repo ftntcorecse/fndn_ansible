@@ -1,0 +1,28 @@
+---
+- name: GET RESULTS FROM REPORT
+  hosts: FortiSIEM
+  connection: local
+  gather_facts: False
+
+  tasks:
+    - name: GET REPORT WITH RELATIVE TIME DEFINED
+      fsm_report_query:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        ignore_ssl_errors: "enable"
+        report_file_path: "/root/top_fortisiem_events_by_count.xml"
+        report_relative_mins: "60"
+
+    - name: GET REPORT WITH ABSOLUTE TIME DEFINED
+      fsm_report_query:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        ignore_ssl_errors: "enable"
+        report_file_path: "/root/top_fortisiem_events_by_count.xml"
+        report_absolute_begin_date: "04/17/2019"
+        report_absolute_begin_time: "060000"
+        report_absolute_end_date: "04/17/2019"
+        report_absolute_end_time: "070000"
+

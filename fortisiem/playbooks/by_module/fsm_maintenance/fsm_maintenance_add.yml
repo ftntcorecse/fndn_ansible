@@ -1,0 +1,86 @@
+---
+- name: SET MAINTENENCE SCHEDULES
+  hosts: FortiSIEM
+  connection: local
+  gather_facts: False
+
+  tasks:
+    - name: SET BASIC MAINT SCHEDULE
+      fsm_maintenance:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        ignore_ssl_errors: "enable"
+        mode: "add"
+        export_json_to_screen: "enable"
+        export_json_to_file_path: "/root/json_main_1.json"
+        export_xml_to_file_path: "/root/xml_main_1.xml"
+        name: "testMaintAnsible1"
+        description: "created by ansible test workbook"
+        devices: "10.0.0.5"
+        fire_incidents: False
+        time_zone_id: "Americas/Los_Angeles"
+        start_hour: "08"
+        start_min: "30"
+        duration: "380"
+        time_zone: "-8"
+        start_date: "2019-05-02"
+        end_date: "2019-05-10"
+
+    - name: SET BASIC MAINT SCHEDULE w/ open end date
+      fsm_maintenance:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        ignore_ssl_errors: "enable"
+        mode: "add"
+        export_json_to_screen: "enable"
+        export_json_to_file_path: "/root/json_main_2.json"
+        export_xml_to_file_path: "/root/xml_main_2.xml"
+        name: "testMaintAnsible2"
+        description: "created by ansible test workbook"
+        devices: "10.0.0.5"
+        fire_incidents: False
+        time_zone_id: "Americas/Los_Angeles"
+        start_hour: "08"
+        start_min: "30"
+        duration: "380"
+        time_zone: "-8"
+        start_date: "2019-05-02"
+        end_date_open: True
+
+    - name: SET BASIC MAINT SCHEDULE w/ open end date 2
+      fsm_maintenance:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        ignore_ssl_errors: "enable"
+        mode: "add"
+        export_json_to_screen: "enable"
+        export_json_to_file_path: "/root/json_main_3.json"
+        export_xml_to_file_path: "/root/xml_main_3.xml"
+        name: "testMaintAnsible4"
+        description: "created by ansible test workbook"
+        groups: "Firewall"
+        fire_incidents: False
+        time_zone_id: "Americas/Los_Angeles"
+        start_hour: "08"
+        start_min: "30"
+        duration: "380"
+        time_zone: "-8"
+        start_date: "2019-05-02"
+        end_date_open: True
+
+
+    - name: SET BASIC MAINT SCHEDULE VIA INPUT FILE
+      fsm_maintenance:
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        ignore_ssl_errors: "enable"
+        mode: "add"
+        export_json_to_screen: "enable"
+        export_json_to_file_path: "/root/json_main_4.json"
+        export_xml_to_file_path: "/root/xml_main_4.xml"
+        input_xml_file: "/root/scheduleDef.xml"
+

@@ -1,0 +1,27 @@
+<accessConfigs>
+    <accessMethods>
+        <accessMethod>
+            <name>AnsibleTestSSHCred</name>
+            <accessProtocol>SSH</accessProtocol>
+            <description/>
+            <pwdType>Manual</pwdType>
+            <baseDN/>
+            <pullInterval>5</pullInterval>
+            <credential>
+                <password>fortinet</password>
+                <principal>fortinet</principal>
+                <suPassword/>
+            </credential>
+            <deviceType>
+                <model>Generic</model>
+                <vendor>Generic</vendor>
+                <version>ANY</version>
+            </deviceType>
+        </accessMethod>
+    </accessMethods>
+    <ipAccessMappings>
+        <ipAccessMapping>
+            <ipRange>10.0.0.5</ipRange>
+        </ipAccessMapping>
+    </ipAccessMappings>
+</accessConfigs>

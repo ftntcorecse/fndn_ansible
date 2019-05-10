@@ -1,0 +1,14 @@
+---
+- name: GET ACCESS METHODS
+  hosts: FortiSIEM
+  connection: local
+  gather_facts: False
+
+  tasks:
+  - name: GET ALL CREDENTIALS
+    fsm_credentials:
+      host: "{{ inventory_hostname }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      ignore_ssl_errors: "enable"
+      mode: "get"
