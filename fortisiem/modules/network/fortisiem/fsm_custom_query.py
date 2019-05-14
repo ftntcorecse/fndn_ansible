@@ -17,6 +17,7 @@
 #
 
 from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 ANSIBLE_METADATA = {
@@ -39,31 +40,31 @@ options:
     description:
       - The FortiSIEM's FQDN or IP Address.
     required: true
-    
+
   username:
     description:
       - The username used to authenticate with the FortiManager.
       - organization/username format. The Organization is important, and will only return data from specified Org.
     required: false
-    
+
   password:
     description:
       - The password associated with the username account.
     required: false
-    
+
   ignore_ssl_errors:
     description:
       - When Enabled this will instruct the HTTP Libraries to ignore any ssl validation errors.
     required: false
     default: "enable"
-    options: ["enable", "disable"]
+    choices: ["enable", "disable"]
 
   export_json_to_screen:
     description:
       - When enabled this will print the JSON results to screen.
     required: false
     default: "enable"
-    options: ["enable", "disable"]
+    choices: ["enable", "disable"]
 
   export_json_to_file_path:
     description:
@@ -71,33 +72,32 @@ options:
       - An error will be thrown if this fails.
     required: false
     default: None
-    
+
   export_xml_to_file_path:
     description:
       - When populated, an attempt to write XML to file is made.
       - An error will be thrown if this fails.
     required: false
     default: None
-    
+
   mode:
     description:
-      - Handles how the query is formatted. 
+      - Handles how the query is formatted.
     required: false
     default: "get"
-    options: ["get", "set", "update", "delete", "add"]
-    
+    choices: ["get", "set", "update", "delete", "add"]
+
   uri:
     description:
       - Custom URI to query.
     required: false
-    
+
   payload_file:
     description:
       - Specifies the file path to a custom XML payload file.
     required: false
-    
-'''
 
+'''
 
 EXAMPLES = '''
 - name: SIMPLE CUSTOM QUERY FOR ORGANIZATIONS
@@ -117,7 +117,7 @@ RETURN = """
 api_result:
   description: full API response, includes status code and message
   returned: always
-  type: string
+  type: str
 """
 
 from ansible.module_utils.basic import AnsibleModule, env_fallback

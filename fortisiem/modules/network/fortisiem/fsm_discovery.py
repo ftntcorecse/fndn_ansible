@@ -17,6 +17,7 @@
 #
 
 from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 ANSIBLE_METADATA = {
@@ -39,31 +40,31 @@ options:
     description:
       - The FortiSIEM's FQDN or IP Address.
     required: true
-    
+
   username:
     description:
       - The username used to authenticate with the FortiManager.
       - organization/username format. The Organization is important, and will only return data from specified Org.
     required: false
-    
+
   password:
     description:
       - The password associated with the username account.
     required: false
-    
+
   ignore_ssl_errors:
     description:
       - When Enabled this will instruct the HTTP Libraries to ignore any ssl validation errors.
     required: false
     default: "enable"
-    options: ["enable", "disable"]
+    choices: ["enable", "disable"]
 
   export_json_to_screen:
     description:
       - When enabled this will print the JSON results to screen.
     required: false
     default: "enable"
-    options: ["enable", "disable"]
+    choices: ["enable", "disable"]
 
   export_json_to_file_path:
     description:
@@ -71,7 +72,7 @@ options:
       - An error will be thrown if this fails.
     required: false
     default: None
-    
+
   export_xml_to_file_path:
     description:
       - When populated, an attempt to write XML to file is made.
@@ -93,24 +94,24 @@ options:
     description:
       - Discovery type to use in FortiSIEM.
     required: true
-    options: ["RangeScan", "SmartScan", "L2Scan", "status"]
-    
+    choices: ["RangeScan", "SmartScan", "L2Scan", "status"]
+
   root_ip:
     description:
       - Specifies the IP of a device to use as the "root" scanning device. Usually a router or switch.
       - Ignored unless "SmartScan" is set for mode
     required: false
-    
+
   include_range:
     description:
-      - Specifies the IP ranges to specify, in comma seperated format. 
+      - Specifies the IP ranges to specify, in comma seperated format.
     required: false
-    
+
   exclude_range:
     description:
-      - Specifies the IP ranges to specify, in comma seperated format. 
+      - Specifies the IP ranges to specify, in comma seperated format.
     required: false
-    
+
   no_ping:
     description:
       - Tells FortiSIEM not to attempt to ping a device before attempting to discover it.
@@ -118,83 +119,83 @@ options:
     required: false
     default: false
     type: bool
-    
+
   only_ping:
     description:
       - Tells FortiSIEM to only discover devices with ICMP pings.
     required: false
     default: false
     type: bool
-    
+
   task_id:
     description:
       - Tells the module which task ID to query for when type = status.
     required: false
     type: int
-    
+
   delta:
     description:
       - Only discovers new devices.
     required: false
     default: false
     type: bool
-    
+
   vm_off:
     description:
       - Doesn't discover VMs.
     required: false
     default: false
     type: bool
-    
+
   vm_templates:
     description:
       - Discover VM templates.
     required: false
     default: false
     type: bool
-    
+
   discover_routes:
     description:
       - Discovers routes and follows those in smart scans.
     required: false
     default: true
     type: bool
-    
+
   winexe_based:
     description:
       - Discovers windows boxes with winExe.
     required: false
     default: false
     type: bool
-    
+
   unmanaged:
     description:
       - Sets newly discovered devices to unmanaged.
     required: false
     default: false
     type: bool
-    
+
   monitor_win_events:
     description:
       - Turns on or off Windows Event log mointor for newly discovered devices.
     required: false
     default: true
     type: bool
-    
+
   monitor_win_patches:
     description:
       - Turns on or off Windows Patching logging.
     required: false
     default: true
     type: bool
-    
+
   monitor_installed_sw:
     description:
       - Turns on or off Windows Installed Software monitoring.
     required: false
     default: true
     type: bool
-    
+
   name_resolution_dns_first:
     description:
       - Specifies to use DNS for name resolution first, and then SNMP/NETBIOS/SSH.
@@ -202,10 +203,10 @@ options:
     required: false
     default: true
     type: bool
-    
+
 '''
 
-EXAMPLES = '''  
+EXAMPLES = '''
 - name: SUBMIT RANGE SCAN FOR SINGLE DEVICE
   fsm_discovery:
     host: "{{ inventory_hostname }}"
@@ -299,7 +300,7 @@ RETURN = """
 api_result:
   description: full API response, includes status code and message
   returned: always
-  type: string
+  type: str
 """
 
 from ansible.module_utils.basic import AnsibleModule, env_fallback

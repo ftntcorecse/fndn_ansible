@@ -94,11 +94,14 @@ class FSMXMLGenerators(object):
         includeRange.text = self._module.paramgram["org_include_ip_range"]
         excludeRange = ET.SubElement(organization, "excludeRange")
         excludeRange.text = self._module.paramgram["org_exclude_ip_range"]
+
         if self._module.paramgram["uri"] == FSMEndpoints.ADD_ORGS:
             custResource = ET.Element("custResource")
             organization.append(custResource)
             eps = ET.SubElement(custResource, "eps")
             eps.text = self._module.paramgram["org_eps"]
+            max_devices = ET.SubElement(custResource, "configItem")
+            max_devices.text = str(self._module.paramgram["org_max_devices"])
 
         # CONCAT COLLECTORS BEFORE APPENDING IF SPECIFIED
         if self._module.paramgram["org_collectors"]:

@@ -17,6 +17,7 @@
 #
 
 from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 ANSIBLE_METADATA = {
@@ -40,28 +41,28 @@ options:
     description:
       - The FortiSIEM's FQDN or IP Address.
     required: true
-    
+
   ignore_ssl_errors:
     description:
       - When Enabled this will instruct the HTTP Libraries to ignore any ssl validation errors.
       - Also will ignore any errors when network_protocol = TCP
     required: false
     default: "enable"
-    options: ["enable", "disable"]
-    
+    choices: ["enable", "disable"]
+
   network_protocol:
     description:
       - Handles how the syslog is transmitted. TCP or UDP, with or without TLS 1.2.
     required: false
     default: "udp"
-    options: ["udp", "tcp", "tcp-tls1.2"]
-    
+    choices: ["udp", "tcp", "tcp-tls1.2"]
+
   network_port:
     description:
       - Handles which port to send the log on, TCP or UDP. Default 514
     required: false
     default: 514
-    
+
   syslog_message:
     description:
       - The actual message to send.
@@ -75,12 +76,12 @@ options:
 
   syslog_facility:
     description:
-      - The facility of the syslog. 
+      - The facility of the syslog.
     default: "USER"
     required: false
     choices: ['KERN', 'USER', 'MAIL', 'DAEMON', 'AUTH', 'SYSLOG',
-              'LPR', 'NEWS', 'UUCP', 'CRON', 'AUTHPRIV', 'FTP', 
-              'LOCAL0', 'LOCAL1', 'LOCAL2', 'LOCAL3', 
+              'LPR', 'NEWS', 'UUCP', 'CRON', 'AUTHPRIV', 'FTP',
+              'LOCAL0', 'LOCAL1', 'LOCAL2', 'LOCAL3',
               'LOCAL4', 'LOCAL5', 'LOCAL6', 'LOCAL7']
 
   syslog_level:
@@ -89,9 +90,8 @@ options:
     default: "INFO"
     required: false
     choices: [ 'EMERG', 'ALERT', 'CRIT', 'ERR', 'WARNING', 'NOTICE', 'INFO', 'DEBUG' ]
-    
-'''
 
+'''
 
 EXAMPLES = '''
 - name: SEND UDP/514 SYSLOG WITH AUTO HEADER
@@ -101,11 +101,11 @@ EXAMPLES = '''
     syslog_message: "This is a test syslog from Ansible!"
 
 - name: SEND UDP/514 SYSLOG WITH AUTO HEADER
-    fsm_send_syslog:
-      syslog_host: "10.7.220.61"
-      ignore_ssl_errors: "enable"
-      syslog_message: "This is a test syslog from Ansible!"
-      
+  fsm_send_syslog:
+    syslog_host: "10.7.220.61"
+    ignore_ssl_errors: "enable"
+    syslog_message: "This is a test syslog from Ansible!"
+
 - name: SEND UDP/514 SYSLOG CUSTOM HEADER
   fsm_send_syslog:
     syslog_host: "10.7.220.61"
@@ -130,7 +130,7 @@ EXAMPLES = '''
     network_protocol: "tcp-tls1.2"
     syslog_message: "This is a test syslog from Ansible!"
     syslog_header: "This is a TEST HEADER TCP TLS PORT 6514 :"
-    
+
 - name: SEND UDP/514 SYSLOG WITH AUTO HEADER AND DIFF FACILITY AND LEVEL
   fsm_send_syslog:
     syslog_host: "10.7.220.61"
@@ -144,7 +144,7 @@ RETURN = """
 api_result:
   description: full API response, includes status code and message
   returned: always
-  type: string
+  type: str
 """
 
 from ansible.module_utils.basic import AnsibleModule
@@ -153,7 +153,6 @@ from ansible.module_utils.network.fortisiem.common import DEFAULT_EXIT_MSG
 from ansible.module_utils.network.fortisiem.common import SyslogFacility
 from ansible.module_utils.network.fortisiem.common import SyslogLevel
 from ansible.module_utils.network.fortisiem.fortisiem import FortiSIEMHandler
-
 
 
 def main():
@@ -169,12 +168,12 @@ def main():
         syslog_facility=dict(required=False, type="str", default="USER", choices=['KERN', 'USER', 'MAIL',
                                                                                   'DAEMON', 'AUTH', 'SYSLOG', 'LPR',
                                                                                   'NEWS', 'UUCP', 'CRON', 'AUTHPRIV',
-                                                                                  'FTP',  'LOCAL0', 'LOCAL1', 'LOCAL2',
+                                                                                  'FTP', 'LOCAL0', 'LOCAL1', 'LOCAL2',
                                                                                   'LOCAL3', 'LOCAL4', 'LOCAL5',
                                                                                   'LOCAL6', 'LOCAL7']),
-        syslog_level=dict(required=False, type="str", default="INFO", choices=[ 'EMERG', 'ALERT', 'CRIT', 'ERR',
-                                                                                'WARNING', 'NOTICE',
-                                                                                'INFO', 'DEBUG']),
+        syslog_level=dict(required=False, type="str", default="INFO", choices=['EMERG', 'ALERT', 'CRIT', 'ERR',
+                                                                               'WARNING', 'NOTICE',
+                                                                               'INFO', 'DEBUG']),
 
     )
     module = AnsibleModule(argument_spec, supports_check_mode=False)
@@ -199,7 +198,6 @@ def main():
             paramgram["network_port"] = 1470
         if paramgram["network_protocol"] == "tcp-tls1.2":
             paramgram["network_port"] = 6514
-
 
     # GET THE PROPER VALUES FROM FACILITY AND LEVELS
     try:

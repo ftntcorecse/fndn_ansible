@@ -17,6 +17,7 @@
 #
 
 from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 ANSIBLE_METADATA = {
@@ -39,31 +40,31 @@ options:
     description:
       - The FortiSIEM's FQDN or IP Address.
     required: true
-    
+
   username:
     description:
       - The username used to authenticate with the FortiManager.
       - organization/username format. The Organization is important, and will only return data from specified Org.
     required: false
-    
+
   password:
     description:
       - The password associated with the username account.
     required: false
-    
+
   ignore_ssl_errors:
     description:
       - When Enabled this will instruct the HTTP Libraries to ignore any ssl validation errors.
     required: false
     default: "enable"
-    options: ["enable", "disable"]
+    choices: ["enable", "disable"]
 
   export_json_to_screen:
     description:
       - When enabled this will print the JSON results to screen.
     required: false
     default: "enable"
-    options: ["enable", "disable"]
+    choices: ["enable", "disable"]
 
   export_json_to_file_path:
     description:
@@ -71,32 +72,32 @@ options:
       - An error will be thrown if this fails.
     required: false
     default: None
-    
+
   export_xml_to_file_path:
     description:
       - When populated, an attempt to write XML to file is made.
       - An error will be thrown if this fails.
     required: false
     default: None
-    
+
   mode:
     description:
       - Defines the HTTP method used in the playbook.
-      - When updating friendly_name is the primary key. 
+      - When updating friendly_name is the primary key.
     required: false
     default: "add"
-    options: ["add", "update", "get"]
-    
+    choices: ["add", "update", "get"]
+
   input_xml_file:
     description:
       - If defined, all other options are ignored. The XML in the file path specified is strictly used.
     required: false
-    
+
   access_protocol:
     description:
       - Defines the access protocol in use. Also plays a large role in included/excluded parameters.
     required: true
-    choices: 
+    choices:
       - ftp
       - ftp_over_ssl
       - imap
@@ -123,7 +124,7 @@ options:
       - The Access_ID of the credential you want to map.
       - Only used when mode is "map"
     required: false
-    
+
   friendly_name:
     description:
       - Specifies the friendly name specified for the credential.
@@ -134,13 +135,13 @@ options:
     description:
       - Specifies the description for the credential
     required: false
-    
+
   pull_interval:
     description:
       - Specifies the pull interval for any monitors created as a result of this credential..
     required: false
     default: 5
-    
+
   cred_username:
     description:
       - Specifies the username for the credential.
@@ -163,7 +164,6 @@ options:
 
 '''
 
-
 EXAMPLES = '''
 - name: ADD AN SSH CREDENTIAL
   fsm_credentials:
@@ -176,7 +176,7 @@ EXAMPLES = '''
     access_protocol: "ssh"
     friendly_name: "AnsibleTestSSHCred"
     mode: "add"
-    
+
 - name: ADD AN SSH CREDENTIAL FOR ELEVATED DEVICE
   fsm_credentials:
     host: "10.0.0.15"
@@ -191,7 +191,7 @@ EXAMPLES = '''
     friendly_name: "AnsibleTestCiscoCred"
     mode: "add"
     ip_range: "10.0.254.1-10.0.254.255"
-    
+
 - name: ADD AN VM_SDK CREDENTIAL
   fsm_credentials:
     host: "10.0.0.15"
@@ -224,7 +224,7 @@ RETURN = """
 api_result:
   description: full API response, includes status code and message
   returned: always
-  type: string
+  type: str
 """
 
 from ansible.module_utils.basic import AnsibleModule, env_fallback

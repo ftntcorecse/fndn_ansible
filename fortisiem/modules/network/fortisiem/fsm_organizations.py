@@ -17,6 +17,7 @@
 #
 
 from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 ANSIBLE_METADATA = {
@@ -39,13 +40,13 @@ options:
     description:
       - The FortiSIEM's FQDN or IP Address.
     required: true
-    
+
   username:
     description:
       - The username used to authenticate with the FortiManager.
       - organization/username format. The Organization is important, and will only return data from specified Org.
     required: false
-    
+
   password:
     description:
       - The password associated with the username account.
@@ -56,14 +57,14 @@ options:
       - When Enabled this will instruct the HTTP Libraries to ignore any ssl validation errors.
     required: false
     default: "enable"
-    options: ["enable", "disable"]
+    choices: ["enable", "disable"]
 
   export_json_to_screen:
     description:
       - When enabled this will print the JSON results to screen.
     required: false
     default: "enable"
-    options: ["enable", "disable"]
+    choices: ["enable", "disable"]
 
   export_json_to_file_path:
     description:
@@ -71,86 +72,91 @@ options:
       - An error will be thrown if this fails.
     required: false
     default: None
-    
+
   export_xml_to_file_path:
     description:
       - When populated, an attempt to write XML to file is made.
       - An error will be thrown if this fails.
     required: false
     default: None
-    
+
   mode:
     description:
       - Tells module to get, update or delete organizations.
     required: false
     default: "get"
-    options: ["add", "get", "update"]
-    
+    choices: ["add", "get", "update"]
+
   org_name:
     description:
       - The short-hand camelCase (preferred) name of the organization
     required: false
-  
+
   org_display_name:
     description:
       - The full display name for the organization.
     required: false
-  
+
   org_description:
     description:
       - The description of the organization.
     required: false
-  
+
   org_admin_username:
     description:
       - Organization root admin username to be created.
     required: false
-  
+
   org_admin_password:
     description:
       - Organization root admin password to be used.
     required: false
-  
+
   org_admin_email:
     description:
-      - Organization administration email. Either internal, or customer alias. 
+      - Organization administration email. Either internal, or customer alias.
     required: false
-  
+
   org_eps:
     description:
       - Events per second limit for organization.
     required: false
-  
+
+  org_max_devices:
+    description:
+      - Max number of devices allowed for org.
+    required: false
+    default: 0
+
   org_include_ip_range:
     description:
       - Included IP Range. Typically only used for Orgs without a collector.
     required: false
-  
+
   org_exclude_ip_range:
     description:
       - Excluded IP range. Typically only used for Orgs without a collector.
     required: false
-    
+
   org_collectors:
     description:
       - If specified, other org_collector_ options are ignored. List with JSON dicts format expected.
       - Only name and eps are valid arguments for each dictionary within the list.
       - See playbook examples
     required: false
-  
+
   org_collector_name:
     description:
       - Organization collector name.
     required: false
-  
+
   org_collector_eps:
     description:
       - Organization collector allowed events per second.
-    required: false 
-  
-    
-'''
+    required: false
 
+
+'''
 
 EXAMPLES = '''
 - name: GET LIST OF ORGS
@@ -159,7 +165,7 @@ EXAMPLES = '''
     username: "super/api_user"
     password: "Fortinet!1"
     ignore_ssl_errors: "enable"
-    
+
 - name: ADD AN ORG WITH COLLECTOR VIA PARAMETERS
   fsm_organizations:
     host: "10.7.220.61"
@@ -178,6 +184,7 @@ EXAMPLES = '''
     org_exclude_ip_range: "192.168.10.51-192.168.10.255"
     org_collector_name: "ansibleOrg1Col1"
     org_collector_eps: "200"
+    org_max_devices: 5
 
 - name: ADD AN ORG WITH COLLECTOR VIA JSON
   fsm_organizations:
@@ -196,7 +203,7 @@ EXAMPLES = '''
     org_include_ip_range: "192.168.20.1-192.168.20.50"
     org_exclude_ip_range: "192.168.20.51-192.168.20.255"
     org_collectors: [{'name': 'ansibleOrg2Col1', 'eps': '200'},{'name': 'ansibleOrg2Col2', 'eps': '200'}]
-    
+
 - name: UPDATE AN ORG WITH COLLECTOR VIA PARAMETERS
   fsm_organizations:
     host: "10.7.220.61"
@@ -238,7 +245,7 @@ RETURN = """
 api_result:
   description: full API response, includes status code and message
   returned: always
-  type: string
+  type: str
 """
 
 from ansible.module_utils.basic import AnsibleModule, env_fallback
@@ -246,6 +253,7 @@ from ansible.module_utils.network.fortisiem.common import FSMEndpoints
 from ansible.module_utils.network.fortisiem.common import FSMBaseException
 from ansible.module_utils.network.fortisiem.common import DEFAULT_EXIT_MSG
 from ansible.module_utils.network.fortisiem.fortisiem import FortiSIEMHandler
+
 
 
 def main():
@@ -268,6 +276,7 @@ def main():
         org_admin_password=dict(required=False, type="str", no_log=True),
         org_admin_email=dict(required=False, type="str"),
         org_eps=dict(required=False, type="str"),
+        org_max_devices=dict(required=False, type="int", default=0),
         org_include_ip_range=dict(required=False, type="str"),
         org_exclude_ip_range=dict(required=False, type="str"),
         org_collectors=dict(required=False, type="list"),
@@ -305,6 +314,7 @@ def main():
         "org_admin_password": module.params["org_admin_password"],
         "org_admin_email": module.params["org_admin_email"],
         "org_eps": module.params["org_eps"],
+        "org_max_devices": module.params["org_max_devices"],
         "org_include_ip_range": module.params["org_include_ip_range"],
         "org_exclude_ip_range": module.params["org_exclude_ip_range"],
         "org_collectors": module.params["org_collectors"],

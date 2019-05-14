@@ -17,6 +17,7 @@
 #
 
 from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 ANSIBLE_METADATA = {
@@ -39,31 +40,31 @@ options:
     description:
       - The FortiSIEM's FQDN or IP Address.
     required: true
-    
+
   username:
     description:
       - The username used to authenticate with the FortiManager.
       - organization/username format. The Organization is important, and will only return data from specified Org.
     required: false
-    
+
   password:
     description:
       - The password associated with the username account.
     required: false
-    
+
   ignore_ssl_errors:
     description:
       - When Enabled this will instruct the HTTP Libraries to ignore any ssl validation errors.
     required: false
     default: "enable"
-    options: ["enable", "disable"]
+    choices: ["enable", "disable"]
 
   export_json_to_screen:
     description:
       - When enabled this will print the JSON results to screen.
     required: false
     default: "enable"
-    options: ["enable", "disable"]
+    choices: ["enable", "disable"]
 
   export_json_to_file_path:
     description:
@@ -71,7 +72,7 @@ options:
       - An error will be thrown if this fails.
     required: false
     default: None
-    
+
   export_xml_to_file_path:
     description:
       - When populated, an attempt to write XML to file is made.
@@ -92,7 +93,7 @@ options:
     required: false
     default: "add"
     choices: ["add", "delete"]
-    
+
   name:
     description:
       - Friendly Name of Schedule Entry.
@@ -163,13 +164,12 @@ options:
       - When true then end_date is ignored.
     required: false
     default: False
-    type: bool    
+    type: bool
 '''
 
-
 EXAMPLES = '''
- - name: SET BASIC MAINT SCHEDULE
-  fsm_maintenance:
+- name: SET BASIC MAINT SCHEDULE
+   fsm_maintenance:
     host: "{{ inventory_hostname }}"
     username: "{{ username }}"
     password: "{{ password }}"
@@ -324,15 +324,13 @@ EXAMPLES = '''
     time_zone: "-8"
     start_date: "2019-05-02"
     end_date_open: True
-
-
 '''
 
 RETURN = """
 api_result:
   description: full API response, includes status code and message
   returned: always
-  type: string
+  type: str
 """
 
 from ansible.module_utils.basic import AnsibleModule, env_fallback
