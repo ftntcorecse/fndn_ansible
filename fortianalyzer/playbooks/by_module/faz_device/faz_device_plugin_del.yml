@@ -1,0 +1,19 @@
+---
+- name: DELETE FAZ DEVICE
+  connection: httpapi
+  gather_facts: false
+  hosts: FortiAnalyzer
+
+  tasks:
+    - name: DELETE DEVICE FGT01
+      faz_device:
+        adom: "root"
+        device_unique_name: "ansible-fgt01"
+        mode: "delete"
+
+    - name: DELETE DEVICE FGT02
+      faz_device:
+        adom: "root"
+        device_unique_name: "ansible-fgt02"
+        mode: "delete"
+

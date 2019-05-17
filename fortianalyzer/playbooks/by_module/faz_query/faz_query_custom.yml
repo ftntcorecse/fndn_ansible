@@ -1,0 +1,12 @@
+---
+- name: FAZ CONNECTION GET SYS STATUS
+  hosts: FortiAnalyzer
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+  - name: TEST FAZ CONNECTION GET SYS STATUS
+    faz_query:
+      adom: "root"
+      object: "custom"
+      custom_endpoint: "/sys/status"

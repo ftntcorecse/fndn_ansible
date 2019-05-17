@@ -1,0 +1,25 @@
+---
+- name: PROMOTE FAZ DEVICES
+  connection: httpapi
+  gather_facts: false
+  hosts: FortiAnalyzer
+
+  tasks:
+    - name: PROMOTE FGT01 IN FAZ BY IP
+      faz_device:
+        adom: "root"
+        device_password: "fortinet"
+        device_ip: "10.7.220.151"
+        device_username: "ansible"
+        mgmt_mode: "faz"
+        mode: "promote"
+
+
+    - name: PROMOTE FGT02 IN FAZ
+      faz_device:
+        adom: "root"
+        device_password: "fortinet"
+        device_unique_name: "ansible-fgt02"
+        device_username: "ansible"
+        mgmt_mode: "faz"
+        mode: "promote"
