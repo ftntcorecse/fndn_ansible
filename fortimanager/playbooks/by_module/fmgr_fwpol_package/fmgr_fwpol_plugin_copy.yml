@@ -1,0 +1,38 @@
+---
+
+- name: CONFIG FW POLICY PACKAGES AND FOLDERS
+  hosts: FortiManager
+  vars:
+    json_dump: "True"
+  connection: httpapi
+  gather_facts: False
+
+  tasks:
+  - name: ADD PACKAGE WITH TARGETS
+    fmgr_fwpol_package:
+      mode: "set"
+      adom: "ansible"
+      name: "test456"
+      object_type: "pkg"
+      inspection_mode: "flow"
+      ngfw_mode: "profile-based"
+     # scope_members: "FGT2, FGT3"
+     # scope_groups: "TestGroup"
+
+  - name: MOVE PACKAGE NO PARENT NO NAME CHANGE
+    fmgr_fwpol_package:
+      mode: "copy"
+      object_type: "pkg"
+      adom: "ansible"
+      name: "test456"
+     # parent_folder: ""
+      target_folder: "ansibleTestFolder1/ansibleTestFolder2/ansibleTestFolder3"
+
+  - name: MOVE PACKAGE AGAIN
+    fmgr_fwpol_package:
+      mode: "copy"
+      object_type: "pkg"
+      adom: "ansible"
+      name: "test456"
+      parent_folder: "ansibleTestFolder1/ansibleTestFolder2/ansibleTestFolder3"
+      target_folder: "ansibleTestFolder1"
