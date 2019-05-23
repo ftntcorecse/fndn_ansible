@@ -92,7 +92,6 @@ from ansible.module_utils.network.fortimanager.common import FMGRMethods
 from ansible.module_utils.network.fortimanager.common import DEFAULT_RESULT_OBJ
 from ansible.module_utils.network.fortimanager.common import FAIL_SOCKET_MSG
 
-import pydevd
 
 
 def fmgr_set_fortimeter_lic(fmgr, paramgram):
@@ -146,7 +145,6 @@ def fmgr_set_fortimeter_lic(fmgr, paramgram):
         "foslic_utm": foslic,
         "foslic_type": paramgram["foslic_type"]
     }
-    pydevd.settrace('10.0.0.151', port=54654, stdoutToServer=True, stderrToServer=True)
     url = "/dvmdb/adom/{adom}/device/{device}".format(adom=paramgram["adom"], device=paramgram["device_unique_name"])
     response = fmgr.process_request(url, datagram, FMGRMethods.SET)
 

@@ -127,6 +127,7 @@ options:
     description:
       - List of groups to add to the scope of the fw pol package
     required: false
+    version_added: 2.9
 
   scope_members:
     description:
@@ -143,22 +144,24 @@ options:
     description:
       - The parent folder name you want to add this object under.
       - Nested folders are supported with forwardslashes. i.e. ansibleTestFolder1/ansibleTestFolder2/etc...
-      - Do not include leading or trailing forwardslashes. We take care of that for you.
+      - Do not include leading or trailing forwardslashes.
     required: false
 
   target_folder:
     description:
       - Only used when mode equals move.
       - Nested folders are supported with forwardslashes. i.e. ansibleTestFolder1/ansibleTestFolder2/etc...
-      - Do not include leading or trailing forwardslashes. We take care of that for you.
+      - Do not include leading or trailing forwardslashes.
     required: false
-    
+    version_added: 2.9
+
   target_name:
     description:
       - Only used when mode equals move.
       - Only used when you want to rename the package in its new location.
       - If None, then NAME will be used.
     required: false
+    version_added: 2.9
 '''
 
 
@@ -256,7 +259,6 @@ from ansible.module_utils.network.fortimanager.common import DEFAULT_RESULT_OBJ
 from ansible.module_utils.network.fortimanager.common import FAIL_SOCKET_MSG
 from ansible.module_utils.network.fortimanager.common import FMGRMethods
 
-import pydevd
 
 def fmgr_fwpol_package(fmgr, paramgram):
     """
@@ -300,7 +302,6 @@ def fmgr_fwpol_package(fmgr, paramgram):
 
     # IF MODE IS MOVE
     if paramgram['mode'] in ["move", "copy"]:
-       # pydevd.settrace('10.0.0.151', port=54654, stdoutToServer=True, stderrToServer=True)
         if paramgram["mode"] == "move":
             url = '/securityconsole/package/move'
         elif paramgram["mode"] == "copy":
