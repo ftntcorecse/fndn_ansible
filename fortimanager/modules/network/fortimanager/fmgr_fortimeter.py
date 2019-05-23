@@ -34,7 +34,7 @@ notes:
 author: Luke Weighall (@lweighall)
 short_description: Sets FortiMeter licensing level
 description:
-  - Provides MSPs the ability to programatically change FortiMeter license levels on devices.
+  - Provides MSPs the ability to programmatically change FortiMeter license levels on devices.
 
 options:
   adom:
