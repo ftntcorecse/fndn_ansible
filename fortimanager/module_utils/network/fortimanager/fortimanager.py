@@ -44,11 +44,11 @@ except ImportError:
 # and because it's not there, it always fails, regardless of it being under a try/catch here.
 # we're going to move it to a different namespace.
 # # check for debug lib
-try:
-    from ansible.module_utils.network.fortimanager.fortimanager_debug import debug_dump
-    HAS_FMGR_DEBUG = True
-except:
-    HAS_FMGR_DEBUG = False
+# try:
+#     from ansible.module_utils.network.fortimanager.fortimanager_debug import debug_dump
+#     HAS_FMGR_DEBUG = True
+# except:
+#     HAS_FMGR_DEBUG = False
 
 
 # BEGIN HANDLER CLASSES
@@ -75,11 +75,11 @@ class FortiManagerHandler(object):
         data = self._tools.format_request(method, url, **datagram)
         response = self._conn.send_request(method, data)
 
-        if HAS_FMGR_DEBUG:
-            try:
-                debug_dump(response, datagram, self._module.paramgram, url, method)
-            except BaseException:
-                pass
+        # if HAS_FMGR_DEBUG:
+        #     try:
+        #         debug_dump(response, datagram, self._module.paramgram, url, method)
+        #     except BaseException:
+        #         pass
 
         return response
 
