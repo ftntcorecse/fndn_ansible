@@ -31,14 +31,12 @@ from ansible.module_utils.network.fortisiem.common import FSM_RC
 from ansible.module_utils.network.fortisiem.common import FSMEndpoints
 from ansible.module_utils.network.fortisiem.common import FSMBaseException
 from ansible.module_utils.network.fortisiem.common import FSMCommon
-from ansible.module_utils.network.fortisiem.common import SyslogLevel
 from ansible.module_utils.network.fortisiem.common import SendSyslog
 from ansible.module_utils.network.fortisiem.common import scrub_dict
 from ansible.module_utils.network.fortisiem.fsm_xml_generators import FSMXMLGenerators
+from ansible.module_utils.urls import open_url
 
 import base64
-import urllib2
-import ssl
 import json
 import xml.dom.minidom
 import re
@@ -53,6 +51,7 @@ class FortiSIEMHandler(object):
     It also makes extensive use of self.<attribute> methodology to keep track of variables and trade them
     between the various methods that perform the work.
     """
+
     def __init__(self, module):
         self._module = module
         self._tools = FSMCommon
@@ -103,14 +102,9 @@ class FortiSIEMHandler(object):
             FSMBaseException(msg="create_ssl_context() failed to ignore ssl setting" + str(err))
 
         if ignore_ssl_setting == "enable":
-            ctx = ssl.create_default_context()
-            ctx.check_hostname = False
-            ctx.verify_mode = ssl.CERT_NONE
-
+            ctx = False
         else:
-            ctx = ssl.create_default_context()
-            ctx.check_hostname = False
-            ctx.verify_mode = ssl.CERT_REQUIRED
+            ctx = True
         return ctx
 
     def create_auth_header(self):
@@ -142,10 +136,9 @@ class FortiSIEMHandler(object):
 
         :return: xml
         """
-        req = urllib2.Request(url, None, {"Authorization": auth})
+        handle = open_url(url, headers={"Authorization": auth}, method="GET", validate_certs=self.ssl_context)
         out_xml = None
         try:
-            handle = urllib2.urlopen(req, context=self.ssl_context)
             out_xml = handle.read()
             try:
                 self.last_http_return_code = handle.getcode()
@@ -167,17 +160,13 @@ class FortiSIEMHandler(object):
 
         :return: xml
         """
-        req = urllib2.Request(url, payload, {"Authorization": auth,
-                                             "Content-Type": "text/xml",
-                                             "Content-Length": len(payload),
-                                             })
-
-        req.get_method = lambda: 'PUT'
+        handle = open_url(url, data=payload, method="PUT", validate_certs=self.ssl_context,
+                          headers={"Authorization": auth,
+                                   "Content-Type": "text/xml",
+                                   "Content-Length": len(payload),
+                                   })
         out_xml = None
         try:
-            opener = urllib2.build_opener(urllib2.HTTPSHandler(debuglevel=False, context=self.ssl_context))
-            urllib2.install_opener(opener)
-            handle = urllib2.urlopen(req)
             out_xml = handle.read()
             try:
                 self.last_http_return_code = handle.getcode()
@@ -186,8 +175,8 @@ class FortiSIEMHandler(object):
             except BaseException as err:
                 raise FSMBaseException(msg="submit_simple_payload_request() couldn't "
                                            "get the HTTP codes. Error: " + str(err))
-        except urllib2.HTTPError as err:
-            error_msg = err.read()
+        except BaseException as err:
+            error_msg = str(err)
             if "HTTP Status 500" in error_msg:
                 raise FSMBaseException(msg="submit_simple_payload_request(): "
                                            "500 Internal Server Error. In our experience, "
@@ -367,7 +356,7 @@ class FortiSIEMHandler(object):
             missing.append("events")
         else:
             present.append("events")
-            return_dict["device"]["event_results"] =\
+            return_dict["device"]["event_results"] = \
                 self._tools.get_events_info_for_specific_ip(events)
         if not monitors:
             missing.append("monitors")
@@ -480,7 +469,7 @@ class FortiSIEMHandler(object):
             self.report_xml_source = source
         except BaseException as err:
             FSMBaseException(msg="Failed to get file contents at path: " + str(self.export_json_to_file_path) +
-                                       "| Error: " + str(err))
+                                 "| Error: " + str(err))
 
         return source
 
@@ -528,6 +517,7 @@ class FortiSIEMHandler(object):
 
         :return: dict
         """
+        formatted_output_dict = {}
         query_id = self.report_query_id
         self._module.paramgram["uri"] = FSMEndpoints.GET_REPORT_RESULTS + str(query_id) + "/0/1000"
         url = self.create_endpoint_url()
@@ -535,7 +525,7 @@ class FortiSIEMHandler(object):
         first_results = self.get_query_results(self.next_http_auth, url)
         out_xml.append(first_results.decode("utf-8"))
         try:
-            p = re.compile('totalCount="\d+"')
+            p = re.compile(r'totalCount="\d+"')
             mlist = p.findall(out_xml[0])
             mm = mlist[0].replace('"', '')
             row_count = mm.split("=")[-1]
@@ -548,8 +538,8 @@ class FortiSIEMHandler(object):
             pages = int(row_count) / 1000
             if pages > 0:
                 for i in range(pages):
-                    self._module.paramgram["uri"] = FSMEndpoints.GET_REPORT_RESULTS + str(query_id) \
-                                                    + "/" + str((i + 1) * 1000) + '/1000'
+                    self._module.paramgram["uri"] = FSMEndpoints.GET_REPORT_RESULTS + str(query_id) + \
+                                                    "/" + str((i + 1) * 1000) + '/1000'
                     url = self.create_endpoint_url()
                     out_xml_append = self.get_query_results(self.next_http_auth, url)
                     if out_xml_append != '':
@@ -566,7 +556,15 @@ class FortiSIEMHandler(object):
             formatted_output_dict["json_results_raw"] = raw_output_json
             formatted_output_dict["xml_results_raw"] = combined_xml_string
             formatted_output_dict["row_count"] = row_count
-            formatted_output_dict["report_rc"] = formatted_output_dict["json_results_raw"]["queryResult"]["@errorCode"]
+            try:
+                formatted_output_dict["report_rc"] = \
+                    formatted_output_dict["json_results_raw"]["@queryResult"]["errorCode"]
+            except KeyError:
+                try:
+                    formatted_output_dict["report_rc"] = \
+                        formatted_output_dict["json_results_raw"]["queryResult"]["@errorCode"]
+                except BaseException:
+                    formatted_output_dict["report_rc"] = "Unknown"
             formatted_output_dict["query_id"] = query_id
             formatted_output_dict["xml_query"] = self.report_xml_source
         elif row_count == 0:
@@ -591,10 +589,9 @@ class FortiSIEMHandler(object):
         :return: xml
         """
         headers = {'Content-Type': 'text/xml', 'Authorization': auth}
-        req = urllib2.Request(url, report_xml, headers)
+        handle = open_url(url=url, data=report_xml, headers=headers, validate_certs=self.ssl_context)
         out_xml = None
         try:
-            handle = urllib2.urlopen(req, context=self.ssl_context)
             out_xml = handle.read()
             try:
                 self.last_http_return_code = handle.getcode()
@@ -617,10 +614,9 @@ class FortiSIEMHandler(object):
         """
 
         headers = {'Content-Type': 'text/xml', 'Authorization': auth}
-        req = urllib2.Request(url, None, headers)
+        handle = open_url(url=url, headers=headers, method="GET", validate_certs=self.ssl_context)
         out_xml = None
         try:
-            handle = urllib2.urlopen(req, context=self.ssl_context)
             out_xml = handle.read()
             if 'error code="255"' in out_xml:
                 raise FSMBaseException(msg="Query Error, invalid query_id used to query progress.")
@@ -638,10 +634,9 @@ class FortiSIEMHandler(object):
         :return: xml
         """
         headers = {'Content-Type': 'text/xml', 'Authorization': auth}
-        req = urllib2.Request(url, None, headers)
+        handle = open_url(url=url, headers=headers, method="GET", validate_certs=self.ssl_context)
         out_xml = None
         try:
-            handle = urllib2.urlopen(req, context=self.ssl_context)
             out_xml = handle.read()
             if 'error code="255"' in out_xml:
                 raise FSMBaseException(msg="Query Error.")
@@ -671,10 +666,10 @@ class FortiSIEMHandler(object):
         start_epoch = None
         end_epoch = None
         # BUILD THE TIMESTAMP
-        begin_timestamp = self._module.paramgram["report_absolute_begin_date"]\
-                          + " " + self._module.paramgram["report_absolute_begin_time"]
-        end_timestamp = self._module.paramgram["report_absolute_end_date"]\
-                        + " " + self._module.paramgram["report_absolute_end_time"]
+        begin_timestamp = self._module.paramgram["report_absolute_begin_date"] + " " + \
+                          self._module.paramgram["report_absolute_begin_time"]
+        end_timestamp = self._module.paramgram["report_absolute_end_date"] + " " + \
+                        self._module.paramgram["report_absolute_end_time"]
         start_epoch = self._tools.convert_timestamp_to_epoch(begin_timestamp)
         end_epoch = self._tools.convert_timestamp_to_epoch(end_timestamp)
 
@@ -763,6 +758,7 @@ class FortiSIEMHandler(object):
         :param ansible_facts: A prepared dictionary of ansible facts from the execution.
         :type ansible_facts: dict
         """
+
         if module is None and results is None:
             raise FSMBaseException("govern_response() was called without a module and/or results tuple! Fix!")
         # Get the Return code from results
@@ -932,7 +928,7 @@ class FortiSIEMHandler(object):
                 if stop_on_fail:
                     module.exit_json(msg=msg, failed=failed, changed=changed,
                                      unreachable=unreachable, skipped=skipped,
-                                     results=return_results, ansible_facts=ansible_facts,
+                                     ansible_module_results=return_results, ansible_facts=ansible_facts,
                                      invocation={"module_args": ansible_facts["ansible_params"]})
             elif success:
                 if changed_if_success:
@@ -941,7 +937,7 @@ class FortiSIEMHandler(object):
                 if stop_on_success:
                     module.exit_json(msg=msg, success=success, changed=changed, unreachable=unreachable,
                                      skipped=skipped, results=return_results,
-                                     ansible_facts=ansible_facts,
+                                     ansible_module_results=ansible_facts,
                                      invocation={"module_args": ansible_facts["ansible_params"]})
 
         return msg
@@ -976,5 +972,3 @@ class FortiSIEMHandler(object):
             facts.update(kwargs)
 
         return facts
-
-
