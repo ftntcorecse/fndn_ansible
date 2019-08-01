@@ -32,7 +32,7 @@ from ansible.module_utils.network.fortimanager.common import FMGBaseException
 from ansible.module_utils.network.fortimanager.common import FMGRCommon
 from ansible.module_utils.network.fortimanager.common import scrub_dict
 from ansible.module_utils.network.fortimanager.common import FMGRMethods
-
+import time
 
 # check for pyFMG lib - DEPRECATING
 try:
@@ -82,23 +82,73 @@ class FortiManagerHandler(object):
         :return: Dictionary containing results of the API Request via Connection Plugin
         :rtype: dict
         """
+
         try:
             adom = self._module.paramgram["adom"]
             if self.uses_workspace and adom not in self._locked_adom_list and method != FMGRMethods.GET:
                 self.lock_adom(adom=adom)
+
         except BaseException as err:
             raise FMGBaseException(err)
 
         data = self._tools.format_request(method, url, **datagram)
         response = self._conn.send_request(method, data)
 
-        try:
-            adom = self._module.paramgram["adom"]
-            if self.uses_workspace and adom in self._locked_adom_list \
-                    and response[0] == 0 and method != FMGRMethods.GET:
-                self.commit_changes(adom=adom)
-        except BaseException as err:
-            raise FMGBaseException(err)
+        # 7.29.19 - LW FIX FOR FMGR_SCRIPT EXEC IN WORKSPACE MODE -- BECAUSE THE MODULE ISN'T WAITING FOR THE TASK
+        # TO FINISH, WE NEED TO ADD THESE LINES TO CHECK FOR A TASK ID IN THE RESPONSE. IF WE GET ONE, AND
+        # THE FORTIMANAGER HAS WORKSPACE MODE ENABLED, EVERY TWO SECONDS WE'LL QUERY FOR THE STATUS OF THAT TASK
+        # AND IT WILL NOT MOVE FORWARD UNTIL THE TASK HAS REACHED 100%
+
+        if self.uses_workspace:
+            task_id = None
+            try:
+                # LOOK FOR A TASK ID, IF THERE IS, WAIT FOR IT TO FINISH BEFORE GOING MOVING ON
+                task_id = response[1]["task"]
+            except BaseException:
+                pass
+
+            if task_id:
+                retry_interval = 5
+                retry_count = 150
+                try:
+                    if isinstance(self._module.paramgram["retry_interval"], int):
+                        retry_interval = int(self._module.paramgram["retry_interval"])
+                except KeyError:
+                    pass
+                try:
+                    if isinstance(self._module.paramgram["retry_count"], int):
+                        retry_count = int(self._module.paramgram["retry_count"])
+                except KeyError:
+                    pass
+                task_status = 0
+                query_count = 0
+                while task_status != 100:
+                    if query_count > retry_count:
+                        self.unlock_adom(adom=adom)
+                        raise FMGBaseException(msg="The Task in workspace mode exceeded the timeout/retry count. "
+                                                   "Please adjust the retry_count and retry_interval variables "
+                                                   "in the playbook/module.")
+                    time.sleep(retry_interval)
+                    task_query_data = self._tools.format_request(FMGRMethods.GET,
+                                                                 '/task/task/{task_id}'.format(task_id=task_id),
+                                                                 {"adom": self._module.paramgram["adom"]})
+                    task_query_response = self._conn.send_request(FMGRMethods.GET, task_query_data)
+                    try:
+                        task_status = task_query_response[1]["percent"]
+                    except BaseException as err:
+                        self.unlock_adom(adom=adom)
+                        raise FMGBaseException(msg="A task was executed in workspace mode, but the task_id wasn't"
+                                                   "returned. Something has gone wrong. We've unlocked the ADOM,"
+                                                   "and no changes should have been made. Error: " + str(err))
+                    query_count += 1
+
+            try:
+                adom = self._module.paramgram["adom"]
+                if self.uses_workspace and adom in self._locked_adom_list \
+                        and response[0] == 0 and method != FMGRMethods.GET:
+                    self.commit_changes(adom=adom)
+            except BaseException as err:
+                raise FMGBaseException(err)
 
         # if HAS_FMGR_DEBUG:
         #     try:
