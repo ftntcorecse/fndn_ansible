@@ -215,8 +215,6 @@ from ansible.module_utils.network.fortimanager.common import FMGRCommon
 from ansible.module_utils.network.fortimanager.common import FMGRMethods
 from ansible.module_utils.network.fortimanager.common import DEFAULT_RESULT_OBJ
 from ansible.module_utils.network.fortimanager.common import FAIL_SOCKET_MSG
-from ansible.module_utils.network.fortimanager.common import prepare_dict
-from ansible.module_utils.network.fortimanager.common import scrub_dict
 
 
 ###############
