@@ -1,4 +1,4 @@
-# Fortinet Ansible Modules
+# Fortinet Ansible Modules (Deprecated)
 
 These Ansible "base code" modules have been superseded by the new Ansible Galaxy Collections for FortiOS and FortiManager, and are no
 longer included in Ansible as of version 2.10.
